@@ -22,8 +22,19 @@ async function getHashtagId(hashtag) {
 }
 
 async function getRecentPosts(hashtag) {
-  getHashtagId(hashtag).then(id => {
-    console.log(id)
+  return getHashtagId(hashtag).then(id => {
+    return fetch("https://graph.facebook.com/v12.0/" + id + "/recent_media?" + new URLSearchParams({
+      user_id: credentials.ig_account_id,
+      access_token: credentials.access_token,
+      fields: 'id,children{media_url},caption,media_type,media_url,permalink'
+    }), {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }}).then(data => data.json().then(data1 => {
+      return data1['data']
+    }));
   });
 }
 

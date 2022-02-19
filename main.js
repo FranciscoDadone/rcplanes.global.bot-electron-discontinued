@@ -91,12 +91,35 @@ const get_recent_hashtags = require('./src/api/get_recent_hashtags')
 
 const { ipcMain } = require('electron')
 ipcMain.on('anything-asynchronous', (event, arg) => {
-  get_recent_hashtags.getRecentPosts('aeromodelismo')
+  get_recent_hashtags.getRecentPosts('aeromodelismo').then(data => {
+
+    console.log(data)
+
+    let i = 0;
+    while(data[i] != undefined) {
+      if(data[i]['media_type'] == 'IMAGE' || data[i]['media_type'] == 'VIDEO') {
+
+      } else if(data[i]['media_type'] == 'CAROUSEL_ALBUM') {
+        const carousel_item_count = Object.keys(data[i]['children']['data']).length;
+        const carousel_medias = data[i]['children']['data']
+
+
+      }
+      i++;
+    }
+
+
+
+
+  })
+
 })
+
+const db = require('./src/database/DatabaseHandler')
 
 app.on('ready', () => {
   createWindow();
-  // new Ig.InstagramHandler()
+  db.connect()
 })
 
 // Quit when all windows are closed.
