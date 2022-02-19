@@ -87,39 +87,16 @@ function createWindow() {
 // const publish_media = require('./src/api/post_content')
 // publish_media.publish()
 
-const get_recent_hashtags = require('./src/api/get_recent_hashtags')
 
 const { ipcMain } = require('electron')
 ipcMain.on('anything-asynchronous', (event, arg) => {
-  get_recent_hashtags.getRecentPosts('aeromodelismo').then(data => {
-
-    console.log(data)
-
-    let i = 0;
-    while(data[i] != undefined) {
-      if(data[i]['media_type'] == 'IMAGE' || data[i]['media_type'] == 'VIDEO') {
-
-      } else if(data[i]['media_type'] == 'CAROUSEL_ALBUM') {
-        const carousel_item_count = Object.keys(data[i]['children']['data']).length;
-        const carousel_medias = data[i]['children']['data']
-
-
-      }
-      i++;
-    }
-
-
-
-
-  })
 
 })
 
-const db = require('./src/database/DatabaseHandler')
-
+const BackgroundTasks = require('./src/BackgroundTasks')
 app.on('ready', () => {
   createWindow();
-  db.connect()
+  BackgroundTasks.fetchHashtags()
 })
 
 // Quit when all windows are closed.
