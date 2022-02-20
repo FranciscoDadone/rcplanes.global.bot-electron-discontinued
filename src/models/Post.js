@@ -7,8 +7,9 @@ class Post {
   children;
   hashtag = '';
   posted = false;
+  date;
 
-  constructor(post_id, media_type, media_url, caption, permalink, children, hashtag, posted) {
+  constructor(post_id, media_type, media_url, caption, permalink, children, hashtag, posted = false, date) {
     this.post_id     = post_id;
     this.media_type  = media_type;
     this.media_url   = media_url;
@@ -17,6 +18,7 @@ class Post {
     this.children    = children;
     this.hashtag     = hashtag;
     this.posted      = posted;
+    this.date        = date;
   }
 
   getPostId() { return this.post_id }
@@ -27,6 +29,7 @@ class Post {
   getChildren() { return this.children }
   getHashtag() { return this.hashtag }
   isPosted() { return this.posted }
+  getDate() { return this.date }
 
 }
 

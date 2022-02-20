@@ -19,7 +19,17 @@ async function fetchHashtags() {
         await DatabaseQueries.getPostFromId(data[i]['id']).then((post) => {
           dpost = data[i]
           if(post[0] == undefined) {
-            DatabaseQueries.savePostFromHashtag(new Post(dpost['id'], dpost['media_type'], dpost['media_url'], dpost['caption'], dpost['permalink'], dpost['children'], 'aeromodelismo'))
+            DatabaseQueries.savePostFromHashtag(
+              new Post(dpost['id'],
+                       dpost['media_type'],
+                       dpost['media_url'],
+                       dpost['caption'],
+                       dpost['permalink'],
+                       dpost['children'],
+                       'aeromodelismo',
+                       false,
+                       new Date().toLocaleDateString('en-GB')
+                       ))
           }
         })
         i++;
