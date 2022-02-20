@@ -7,12 +7,11 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function fetchHashtags() {
+async function fetchHashtag(hashtag) {
   DatabaseHandler.connect()
   await sleep(1000);
 
-  get_recent_hashtags.getRecentPosts('aeromodelismo').then(data => {
-
+  get_recent_hashtags.getRecentPosts(hashtag).then(data => {
     (async () => {
       let i = 0;
       while(data[i] != undefined) {
@@ -28,7 +27,8 @@ async function fetchHashtags() {
                        dpost['children'],
                        'aeromodelismo',
                        false,
-                       new Date().toLocaleDateString('en-GB')
+                       new Date().toLocaleDateString('en-GB'),
+                       dpost['username']
                        ))
           }
         })
@@ -40,4 +40,11 @@ async function fetchHashtags() {
   })
 }
 
-module.exports = { fetchHashtags }
+
+function startHashtagFetching() {
+
+  fetchHashtag('aeromodelismo')
+
+}
+
+module.exports = { startHashtagFetching }

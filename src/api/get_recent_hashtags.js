@@ -33,7 +33,23 @@ async function getRecentPosts(hashtag) {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     }}).then(data => data.json().then(data1 => {
-      return data1['data']
+      const posts_count = Object.keys(data1['data']).length;
+
+      return (async () => {
+        for(let i = 0; i < posts_count; i++) {
+          const post_permalink = data1['data'][i]['permalink']
+          await fetch('https://api.instagram.com/oembed/?url=' + post_permalink, {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            }}).then(data2 => data2.json().then(data2json => {
+              data1['data'][i]['username'] = data2json['author_name']
+            }))
+        }
+        return data1['data']
+      })()
+
     }));
   });
 }

@@ -29,7 +29,8 @@ function getDatabase() {
   }
 
 function createTables() {
-    database.exec(`
+  // posts_from_hashtags
+  database.exec(`
     CREATE TABLE posts_from_hashtags (
       date        TEXT,
       post_id     TEXT NOT NULL,
@@ -39,7 +40,15 @@ function createTables() {
       permalink   TEXT NOT NULL,
       caption     TEXT,
       children    BLOB,
-      posted      INTEGER
+      posted      INTEGER,
+      username    TEXT
+    );`);
+
+  // hashtags_to_fetch
+  database.exec(`
+    CREATE TABLE hashtags_to_fetch (
+      hashtag      TEXT NOT NULL,
+      banned_users TEXT
     );`);
   }
 

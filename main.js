@@ -102,7 +102,7 @@ ipcMain.on('anything-asynchronous', (event, arg) => {
 
 app.on('ready', () => {
   createWindow();
-  BackgroundTasks.fetchHashtags()
+  BackgroundTasks.startHashtagFetching()
 })
 
 

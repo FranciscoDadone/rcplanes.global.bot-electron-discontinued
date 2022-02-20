@@ -9,7 +9,7 @@ function savePostFromHashtag(post) {
   console.log('Saving post: ' + post.getPostId())
   const db = DatabaseHandler.getDatabase()
 
-  db.run("INSERT INTO posts_from_hashtags (post_id, media_type, media_url, permalink, caption, children, hashtag, posted, date) VALUES (?,?,?,?,?,?,?,?,?)", [
+  db.run("INSERT INTO posts_from_hashtags (post_id, media_type, media_url, permalink, caption, children, hashtag, posted, date, username) VALUES (?,?,?,?,?,?,?,?,?,?)", [
     post.getPostId(),
     post.getMediaType(),
     post.getMediaURL(),
@@ -18,7 +18,8 @@ function savePostFromHashtag(post) {
     post.getChildren(),
     post.getHashtag(),
     post.isPosted(),
-    post.getDate()
+    post.getDate(),
+    post.getUsername()
   ])
 }
 
