@@ -5,6 +5,13 @@ const { app, BrowserWindow } = require('electron')
 const path = require('path')
 const url = require('url')
 
+// Database
+const DatabaseHandler = require('./src/database/DatabaseHandler')
+
+// Tasks
+const BackgroundTasks = require('./src/BackgroundTasks')
+
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
@@ -93,17 +100,18 @@ ipcMain.on('anything-asynchronous', (event, arg) => {
 
 })
 
-const BackgroundTasks = require('./src/BackgroundTasks')
 app.on('ready', () => {
   createWindow();
   BackgroundTasks.fetchHashtags()
 })
+
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
   // On macOS it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
+    DatabaseHandler.close()
     app.quit()
   }
 })
