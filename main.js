@@ -90,11 +90,6 @@ function createWindow() {
   })
 }
 
-
-// const publish_media = require('./src/api/post_content')
-// publish_media.publish()
-
-
 const { ipcMain } = require('electron')
 ipcMain.on('anything-asynchronous', (event, arg) => {
 
