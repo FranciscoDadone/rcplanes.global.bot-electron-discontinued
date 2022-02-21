@@ -15,7 +15,6 @@ async function getHashtagId(hashtag) {
     'Accept': 'application/json',
     'Content-Type': 'application/json'
   }}).then(data => data.json().then(data1 => {
-    console.log('Hashtag id: ' + data1['data'][0]['id'])
     return data1['data'][0]['id']
   }));
 }
