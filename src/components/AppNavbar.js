@@ -1,20 +1,33 @@
 import React from 'react'
-import '../assets/css/AppNavbar.css'
-import Navbar from 'react-bootstrap/Navbar'
-import Container from 'react-bootstrap/Container'
+import { Navbar, Container, Offcanvas, Nav } from 'react-bootstrap'
+import AppStatus from './AppStatus'
+
 
 export default function AppNavbar() {
   return (
-    <Navbar bg="dark" variant="dark">
-    <Container>
-      <Navbar.Brand href="#">rcplanes.global.bot (Instagram)</Navbar.Brand>
-      <Navbar.Toggle />
-      <Navbar.Collapse className="justify-content-end">
+    <Navbar bg="dark" variant="dark" expand={false}>
+      <Container fluid>
+        <Navbar.Toggle aria-controls="offcanvasNavbar" />
+        <Navbar.Brand href="#">rcplanes.global.bot (Instagram)</Navbar.Brand>
         <Navbar.Text>
-          Status: Idle
+          <AppStatus status="Idling..."/>
         </Navbar.Text>
-      </Navbar.Collapse>
-    </Container>
-  </Navbar>
+        <Navbar.Offcanvas
+          id="offcanvasNavbar"
+          aria-labelledby="offcanvasNavbarLabel"
+          placement="start"
+        >
+          <Offcanvas.Header closeButton>
+            <Offcanvas.Title id="offcanvasNavbarLabel">Dashboard</Offcanvas.Title>
+          </Offcanvas.Header>
+          <Offcanvas.Body>
+            <Nav className="justify-content-start flex-grow-1 pe-3">
+              <Nav.Link href="#action1">Home</Nav.Link>
+              <Nav.Link href="#action2">Link</Nav.Link>
+            </Nav>
+          </Offcanvas.Body>
+        </Navbar.Offcanvas>
+      </Container>
+    </Navbar>
   )
 }

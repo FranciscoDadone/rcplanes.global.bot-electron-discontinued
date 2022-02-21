@@ -41,13 +41,12 @@ async function getRecentPosts(hashtag) {
             headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json'
-            }}).then(data2 => data2.json().then(data2json => {
+            }}).then(data2 => { if(data2['status'] == 200) data2.json().then(data2json => {
               data1['data'][i]['username'] = data2json['author_name']
-            }))
+            })})
         }
         return data1['data']
       })()
-
     }));
   });
 }

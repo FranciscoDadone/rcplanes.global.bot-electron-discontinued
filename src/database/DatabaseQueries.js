@@ -6,13 +6,13 @@ const { Post } = require('../models/Post')
  * @param {Post} post
  */
 function savePostFromHashtag(post) {
-  console.log('Saving post: ' + post.getPostId())
+  console.log('Saving post: ' + post.getPostId() + " (#" + post.getHashtag() + ")")
   const db = DatabaseHandler.getDatabase()
 
-  db.run("INSERT INTO posts_from_hashtags (post_id, media_type, media_url, permalink, caption, children, hashtag, posted, date, username) VALUES (?,?,?,?,?,?,?,?,?,?)", [
+  db.run("INSERT INTO posts_from_hashtags (post_id, media_type, storage_path, permalink, caption, children, hashtag, posted, date, username) VALUES (?,?,?,?,?,?,?,?,?,?)", [
     post.getPostId(),
     post.getMediaType(),
-    post.getMediaURL(),
+    post.getStoragePath(),
     post.getPermalink(),
     post.getCaption(),
     post.getChildren(),
