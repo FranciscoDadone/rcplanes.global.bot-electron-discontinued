@@ -49,7 +49,13 @@ function createTables() {
     CREATE TABLE hashtags_to_fetch (
       hashtag      TEXT NOT NULL,
       banned_users TEXT
-    );`);
-  }
+    );`
+  );
+
+  const sql = `INSERT INTO hashtags_to_fetch (hashtag) VALUES (?)`
+  database.run(sql, ['aeromodelismo'])
+  database.run(sql, ['rcplanes'])
+  database.run(sql, ['avionesrc'])
+}
 
 module.exports = { connect, getDatabase, close }

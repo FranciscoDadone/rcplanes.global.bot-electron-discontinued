@@ -4,7 +4,6 @@ const fetch = require("node-fetch");
 
 
 async function getHashtagId(hashtag) {
-  console.log('Getting hashtag info...')
   return fetch("https://graph.facebook.com/v12.0/ig_hashtag_search?" + new URLSearchParams({
     user_id: credentials.ig_account_id,
     access_token: credentials.access_token,

@@ -97,7 +97,11 @@ ipcMain.on('anything-asynchronous', (event, arg) => {
 
 app.on('ready', () => {
   createWindow();
-  BackgroundTasks.startHashtagFetching()
+  (async () => {
+    DatabaseHandler.connect()
+    await new Promise(r => setTimeout(r, 3000));
+    BackgroundTasks.startHashtagFetching()
+  })()
 })
 
 

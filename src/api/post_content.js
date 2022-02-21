@@ -77,8 +77,14 @@ async function publish_media(id) {
     });
 }
 
-function publish(media_type, caption, url) {
-    createMediaObject(media_type, caption, url)
+const { Post } = require('../models/Post')
+/**
+ * Publish a post passed by param.
+ * Make sure to edit the caption and url(image)
+ * @param {Post} post
+ */
+function publish(post) {
+    createMediaObject(post.getMediaType(), post.getCaption(), post.getMediaURL())
 }
 
 module.exports = { publish }

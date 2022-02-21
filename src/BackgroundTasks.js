@@ -1,16 +1,9 @@
 const get_recent_hashtags = require('./api/get_recent_hashtags')
 const { Post } = require('./models/Post')
 const DatabaseQueries = require('./database/DatabaseQueries')
-const DatabaseHandler = require('./database/DatabaseHandler')
-
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
 
 async function fetchHashtag(hashtag) {
-  DatabaseHandler.connect()
-  await sleep(1000);
-
+  console.log("Fetching hashtag: #" + hashtag)
   get_recent_hashtags.getRecentPosts(hashtag).then(data => {
     (async () => {
       let i = 0;
@@ -25,7 +18,7 @@ async function fetchHashtag(hashtag) {
                        dpost['caption'],
                        dpost['permalink'],
                        dpost['children'],
-                       'aeromodelismo',
+                       hashtag,
                        false,
                        new Date().toLocaleDateString('en-GB'),
                        dpost['username']
@@ -42,9 +35,11 @@ async function fetchHashtag(hashtag) {
 
 
 function startHashtagFetching() {
-
-  fetchHashtag('aeromodelismo')
-
+  DatabaseQueries.getAllHashtagsToFetch().then(res => {
+    for(let i = 0; i < Object.keys(res).length; i++) {
+      fetchHashtag(res[i]['hashtag'])
+    }
+  })
 }
 
 module.exports = { startHashtagFetching }
