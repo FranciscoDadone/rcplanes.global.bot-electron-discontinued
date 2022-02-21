@@ -1,6 +1,8 @@
 import React from 'react'
 
 import '../assets/css/App.css'
+import AppNavbar from './AppNavbar'
+
 
 const { ipcRenderer } = require('electron')
 
@@ -11,10 +13,15 @@ function a() {
 
 function App() {
   return (
+    <>
+
+      <AppNavbar />
+
     <div>
-      
+
 
     </div>
+    </>
   )
 }
 
