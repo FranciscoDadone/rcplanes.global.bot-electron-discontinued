@@ -1,4 +1,4 @@
-const sqlite3 = require('sqlite3').verbose();
+const sqlite3 = require('sqlite3').verbose()
 
 let database;
 
@@ -16,6 +16,9 @@ function connect() {
         }
         console.log("Database connected!")
     });
+    // database.on('trace', (err) => {
+    //   console.log(err)
+    // })
     return database;
 }
 
@@ -33,15 +36,15 @@ function createTables() {
   database.exec(`
     CREATE TABLE posts_from_hashtags (
       date         TEXT,
-      post_id      TEXT NOT NULL,
+      post_id      TEXT NOT NULL UNIQUE,
       hashtag      TEXT NOT NULL,
       media_type   TEXT NOT NULL,
-      storage_path TEXT,
+      storage_path TEXT NOT NULL UNIQUE,
       permalink    TEXT NOT NULL,
       caption      TEXT,
-      children     BLOB,
+      children_of  INTEGER,
       posted       INTEGER,
-      username     TEXT
+      username     TEXT NOT NULL
     );`);
 
   // hashtags_to_fetch

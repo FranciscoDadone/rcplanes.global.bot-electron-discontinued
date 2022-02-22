@@ -10,7 +10,8 @@ async function saveMediaToStorage(original_url, media_type, media_id, username) 
       return {
         path: img_path,
         media_type: media_type,
-        media_id: media_id
+        media_id: media_id,
+        username: username
       };
     })
   } else if(media_type == 'VIDEO') {
@@ -19,22 +20,16 @@ async function saveMediaToStorage(original_url, media_type, media_id, username) 
       return {
           path: './storage/' + media_id + ".mp4",
           media_type: media_type,
-          media_id: media_id
+          media_id: media_id,
+          username: username
         }
     })
-  } else if(media_type == 'CAROUSEL_ALBUM') {
-    return {
-      path: '',
-      media_type: media_type,
-      media_id: media_id
-    }
   }
 }
 
 async function fetchHashtag(hashtag) {
   get_recent_hashtags.getRecentPosts(hashtag).then(data => {
     (async () => {
-
       let postsToAdd = []
 
       let i = 0;
@@ -48,29 +43,48 @@ async function fetchHashtag(hashtag) {
         })
       }
 
-
       postsToAdd.map(post => {
         (async () => {
-          await saveMediaToStorage(post['media_url'], post['media_type'], post['id'], post['username']).then(savedMedia => {
-            DatabaseQueries.savePostFromHashtag(
-              new Post(post['id'],
-                       post['media_type'],
-                       savedMedia['path'],
-                       post['caption'],
-                       post['permalink'],
-                       post['children'],
-                       hashtag,
-                       false,
-                       new Date().toLocaleDateString('en-GB'),
-                       post['username']
-                       )
-                      )
-                    })
+          if(post['media_type'] == 'CAROUSEL_ALBUM') {
+            const album_lenght = Object.keys(post['children']['data']).length;
+
+            for(let i = 0; i < album_lenght; i++) {
+              const subPost = post['children']['data'][i]
+              saveMediaToStorage(subPost['media_url'], subPost['media_type'], subPost['id'], post['username']).then(savedMedia => {
+                DatabaseQueries.savePostFromHashtag(
+                  new Post(subPost['id'],
+                          subPost['media_type'],
+                          savedMedia['path'],
+                          post['caption'],
+                          post['permalink'],
+                          hashtag,
+                          false,
+                          new Date().toLocaleDateString('en-GB'),
+                          post['username'],
+                          post['id']
+                          )
+                  )
+              })
+            }
+          } else {
+            await saveMediaToStorage(post['media_url'], post['media_type'], post['id'], post['username']).then(savedMedia => {
+              DatabaseQueries.savePostFromHashtag(
+                new Post(post['id'],
+                         post['media_type'],
+                         savedMedia['path'],
+                         post['caption'],
+                         post['permalink'],
+                         hashtag,
+                         false,
+                         new Date().toLocaleDateString('en-GB'),
+                         savedMedia['username'],
+                         0
+                         )
+                        )
+                      })
+          }
         })()
       })
-
-
-
     })()
   })
 }

@@ -3,24 +3,24 @@ class Post {
   media_type;
   caption;
   permalink;
-  children;
   hashtag = '';
   posted = false;
   date;
   username;
   storage_path;
+  children_of;
 
-  constructor(post_id, media_type, storage_path, caption, permalink, children, hashtag, posted = false, date, username) {
+  constructor(post_id, media_type, storage_path, caption, permalink, hashtag, posted = false, date, username, children_of) {
     this.post_id     = post_id;
     this.media_type  = media_type;
     this.storage_path   = storage_path;
     this.caption     = caption;
     this.permalink   = permalink;
-    this.children    = children;
     this.hashtag     = hashtag;
     this.posted      = posted;
     this.date        = date;
     this.username    = username;
+    this.children_of = children_of;
   }
 
   getPostId() { return this.post_id }
@@ -28,11 +28,11 @@ class Post {
   getStoragePath() { return this.storage_path }
   getCaption() { return this.caption }
   getPermalink() { return this.permalink }
-  getChildren() { return this.children }
   getHashtag() { return this.hashtag }
   isPosted() { return this.posted }
   getDate() { return this.date }
   getUsername() { return this.username }
+  getChildrenOf() { return this.children_of }
 
 }
 

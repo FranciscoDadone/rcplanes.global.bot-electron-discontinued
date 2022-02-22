@@ -24,7 +24,7 @@ async function getRecentPosts(hashtag) {
     return fetch("https://graph.facebook.com/v12.0/" + id + "/recent_media?" + new URLSearchParams({
       user_id: credentials.ig_account_id,
       access_token: credentials.access_token,
-      fields: 'id,children{media_url},caption,media_type,media_url,permalink'
+      fields: 'id,children{media_url,media_type},caption,media_type,media_url,permalink'
     }), {
     method: 'GET',
     headers: {
@@ -41,9 +41,9 @@ async function getRecentPosts(hashtag) {
             headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json'
-            }}).then(data2 => { if(data2['status'] == 200) data2.json().then(data2json => {
+            }}).then(data2 => { if(data2['status'] == 200) { data2.json().then(data2json => {
               data1['data'][i]['username'] = data2json['author_name']
-            })})
+            })} else { data1['data'][i]['username'] = 'Unknown' }})
         }
         return data1['data']
       })()

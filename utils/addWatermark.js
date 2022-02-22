@@ -1,6 +1,7 @@
 const Jimp = require('jimp');
 
 async function addWatermark(image_url, filename, username) {
+  if(username == undefined) return;
    const image = await Jimp.read({
       url: image_url
    });
@@ -17,7 +18,7 @@ async function addWatermark(image_url, filename, username) {
 
       const final_w = (watermark_width  * ((watermark_width * 100) / image_width)) * 0.02;
       watermark.resize(final_w, Jimp.AUTO);
-      const final_h = watermark.getHeight()
+      const final_h = watermark.getHeight();
 
       watermark.print(font, 100, final_h - 40, username)
 
