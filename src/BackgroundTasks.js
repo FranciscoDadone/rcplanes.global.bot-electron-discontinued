@@ -2,6 +2,7 @@ const download = require('download');
 const getRecentPosts = require('./api/getRecentPosts');
 const DatabaseQueries = require('./database/DatabaseQueries');
 const { addWatermark } = require('./utils/addWatermark');
+const Status = require('./utils/Status');
 
 async function saveMediaToStorage(original_url, media_type, media_id, username) {
   if (media_type === 'IMAGE') {
@@ -21,13 +22,18 @@ async function savePost(post) {
 
 async function saveAllPosts(posts) {
   console.log('Now saving images or videos...');
+  let total = 0;
   for (const post of posts) {
     const postFromDB = await DatabaseQueries.getPostFromIdJSON(post.getPostId());
-    if (postFromDB === undefined) {
+    if (postFromDB === undefined && post.getMediaURL() !== undefined) {
       await savePost(post);
+      total++;
+    }
+    if (post.getMediaURL() === undefined) {
+      console.log(`Skipped (${post.getPermalink()}). Maybe it is a reel.`);
     }
   }
-  console.log('Finished saving images and videos.');
+  console.log(`Finished saving images and videos. (Total ${total})`);
 }
 
 async function startHashtagFetching(wait) {
@@ -44,7 +50,9 @@ async function startHashtagFetching(wait) {
     });
     allPosts = allPosts.concat(postsOfHashtag);
   }
+  Status.setStatus('Saving posts');
   await saveAllPosts(allPosts);
+  Status.setStatus('Idling...');
   startHashtagFetching(true);
 }
 

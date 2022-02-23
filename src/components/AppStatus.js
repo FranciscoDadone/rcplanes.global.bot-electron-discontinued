@@ -1,3 +1,4 @@
+import { ipcRenderer } from 'electron'
 import React from 'react'
 
 export default function AppStatus(props) {

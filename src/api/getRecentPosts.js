@@ -19,18 +19,24 @@ async function getHashtagId(hashtag) {
 }
 
 async function getUsername(post) {
-  return fetch(`https://api.instagram.com/oembed/?url=${post.permalink}`, {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-  }).then((data2) => {
-    if (data2.status === 200) {
-      return data2.json().then((data2json) => data2json.author_name);
-    } else {
-      return 'Unknown';
-    }
+  return new Promise((resolve) => {
+    fetch(`https://api.instagram.com/oembed/?url=${post.permalink}`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    }).then((data2) => {
+      if (data2.status === 200) {
+        resolve(data2.json().then((data2json) => data2json.author_name));
+      } else {
+        resolve('Unknown');
+      }
+    });
+
+    setTimeout(() => {
+      resolve('Unknown');
+    }, 5000);
   });
 }
 

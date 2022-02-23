@@ -1,16 +1,26 @@
-import React from 'react'
-import { Navbar, Container, Offcanvas, Nav } from 'react-bootstrap'
-import AppStatus from './AppStatus'
-
+import React, { useState } from 'react';
+import { Navbar, Container, Offcanvas, Nav } from 'react-bootstrap';
+import { ipcRenderer } from 'electron';
+import AppStatus from './AppStatus';
 
 export default function AppNavbar() {
+  const [Status, setStatus] = useState('Fetching...');
+
+  ipcRenderer.on('status', (event, newStatus) => {
+    setStatus(newStatus);
+  });
+
+//   ipcRenderer.invoke('status').then((newStatus) => {
+//     setStatus(newStatus)
+//   })
+
   return (
     <Navbar bg="dark" variant="dark" expand={false}>
       <Container fluid>
         <Navbar.Toggle aria-controls="offcanvasNavbar" />
         <Navbar.Brand href="#">rcplanes.global.bot (Instagram)</Navbar.Brand>
         <Navbar.Text>
-          <AppStatus status="Idling..."/>
+          <AppStatus status={Status} />
         </Navbar.Text>
         <Navbar.Offcanvas
           id="offcanvasNavbar"

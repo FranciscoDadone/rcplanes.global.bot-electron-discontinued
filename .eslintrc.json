@@ -33,6 +33,7 @@
         "no-restricted-syntax": "off",
         "lines-between-class-members": "off",
         "default-param-last": "off",
-        "max-len": "off"
+        "max-len": "off",
+        "object-curly-newline": "off"
     }
 }
