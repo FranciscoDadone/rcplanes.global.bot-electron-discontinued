@@ -34,6 +34,11 @@
         "lines-between-class-members": "off",
         "default-param-last": "off",
         "max-len": "off",
-        "object-curly-newline": "off"
+        "object-curly-newline": "off",
+        "react/jsx-filename-extension": "off",
+        "react/jsx-one-expression-per-line": "off",
+        "indent": "off",
+        "react/jsx-indent": "off",
+        "react/prop-types": "off"
     }
 }

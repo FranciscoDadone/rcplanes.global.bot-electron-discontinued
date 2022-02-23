@@ -89,12 +89,6 @@ function createWindow() {
   });
 }
 
-// ipcMain.on('anything-asynchronous', (event, arg) => {
-
-// });
-// function changeState(state) {
-//     mainWindow.webContents.send('status', state);
-// }
 app.on('ready', () => {
   createWindow();
   (async () => {
