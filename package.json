@@ -4,19 +4,12 @@
   "description": "Instagram bot to fetch and publish media.",
   "license": "MIT",
   "private": false,
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/FranciscoDadone/rcplanes.global.bot.git"
-  },
+  "repository": "https://github.com/FranciscoDadone/rcplanes.global.bot.git",
   "homepage": "",
   "bugs": {
     "url": "https://github.com/FranciscoDadone/rcplanes.global.bot/issues"
   },
-  "author": {
-    "name": "Francisco Dadone",
-    "email": "dadonefran@gmail.com",
-    "url": "https://github.com/FranciscoDadone/"
-  },
+  "author": "Francisco Dadone <dadonefran@gmail.com> (https://github.com/FranciscoDadone/)",
   "keywords": [
     "app",
     "bot",
@@ -51,7 +44,9 @@
     "react": "^17.0.2",
     "react-bootstrap": "^2.1.2",
     "react-dom": "^17.0.2",
-    "sqlite3": "^5.0.2"
+    "sqlite3": "^5.0.2",
+    "electron": "^16.0.5",
+    "electron-packager": "^15.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.16.5",
@@ -60,9 +55,13 @@
     "babel-loader": "^8.2.3",
     "cross-env": "^7.0.3",
     "css-loader": "^6.5.1",
-    "electron": "^16.0.5",
     "electron-devtools-installer": "^3.2.0",
-    "electron-packager": "^15.4.0",
+    "eslint": "^8.2.0",
+    "eslint-config-airbnb": "19.0.4",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-react": "^7.28.0",
+    "eslint-plugin-react-hooks": "^4.3.0",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^2.4.5",

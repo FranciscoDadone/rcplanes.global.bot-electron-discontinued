@@ -2,7 +2,7 @@
 python_ig_api_tests/private/
 src/api/private/credentials.js
 storage
-database/database.sqlite
+src/database/database.sqlite
 
 # Build folder and files #
 ##########################

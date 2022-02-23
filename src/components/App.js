@@ -1,28 +1,21 @@
-import React from 'react'
+import React from 'react';
+import '../assets/css/App.css';
+import AppNavbar from './AppNavbar';
 
-import '../assets/css/App.css'
-import AppNavbar from './AppNavbar'
+// const { ipcRenderer } = require('electron');
 
-
-const { ipcRenderer } = require('electron')
-
-
-function a() {
-  ipcRenderer.send('anything-asynchronous', 'ping')
-}
+// function a() {
+//   ipcRenderer.send('anything-asynchronous', 'ping');
+// }
 
 function App() {
   return (
     <>
 
       <AppNavbar />
-
-    <div>
-
-
-    </div>
+      <div />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

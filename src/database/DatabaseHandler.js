@@ -1,38 +1,19 @@
-const sqlite3 = require('sqlite3').verbose()
+const sqlite3 = require('sqlite3').verbose();
 
 let database;
 
-function connect() {
-    database = new sqlite3.Database('./src/database/database.sqlite', sqlite3.OPEN_READWRITE, (err) => {
-        if (err && err.code == "SQLITE_CANTOPEN") {
-          database = new sqlite3.Database('./src/database/database.sqlite', (err) => {
-            if (err) {
-              console.log("Database error " + err);
-            }
-            createTables();
-        });
-        } else if (err) {
-          console.log("Database error: " + err);
-        }
-        console.log("Database connected!")
-    });
-    // database.on('trace', (err) => {
-    //   console.log(err)
-    // })
-    return database;
+function close() {
+  database.close();
+  console.log('Database closed.');
 }
 
-function close() {
-    database.close()
-    console.log("Database closed.")
-  }
-
 function getDatabase() {
-    return database
-  }
+  return database;
+}
 
 function createTables() {
   // posts_from_hashtags
+  // sto: NOT NULL UNIQUE
   database.exec(`
     CREATE TABLE posts_from_hashtags (
       date         TEXT,
@@ -48,17 +29,35 @@ function createTables() {
     );`);
 
   // hashtags_to_fetch
-  database.exec(`
-    CREATE TABLE hashtags_to_fetch (
-      hashtag      TEXT NOT NULL,
-      banned_users TEXT
-    );`
-  );
+  database.exec(`CREATE TABLE hashtags_to_fetch (
+                    hashtag TEXT NOT NULL,
+                    banned_users TEXT);`);
 
-  const sql = `INSERT INTO hashtags_to_fetch (hashtag) VALUES (?)`
-  database.run(sql, ['aeromodelismo'])
-  database.run(sql, ['rcplanes'])
-  database.run(sql, ['avionesrc'])
+  const sql = 'INSERT INTO hashtags_to_fetch (hashtag) VALUES (?)';
+  database.run(sql, ['aeromodelismo']);
+  database.run(sql, ['rcplanes']);
+  database.run(sql, ['rcplaneshow']);
+  database.run(sql, ['rcfly']);
 }
 
-module.exports = { connect, getDatabase, close }
+function connect() {
+  database = new sqlite3.Database('./src/database/database.sqlite', sqlite3.OPEN_READWRITE, (err) => {
+    if (err && err.code === 'SQLITE_CANTOPEN') {
+      database = new sqlite3.Database('./src/database/database.sqlite', (err1) => {
+        if (err1) {
+          console.log(`Database error ${err1}`);
+        }
+        createTables();
+      });
+    } else if (err) {
+      console.log(`Database error ${err}`);
+    }
+    console.log('Database connected!');
+  });
+//   database.on('trace', (err) => {
+//     console.log(err);
+//   });
+  return database;
+}
+
+module.exports = { connect, getDatabase, close };

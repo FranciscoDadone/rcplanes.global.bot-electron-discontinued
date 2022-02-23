@@ -1,16 +1,15 @@
-const DatabaseHandler = require('./DatabaseHandler')
-const { Post } = require('../models/Post')
+const DatabaseHandler = require('./DatabaseHandler');
 
 /**
  * Saves a post to the database.
  * @param {Post} post
  */
 function savePostFromHashtag(post) {
-  console.log('Saving (' + post.getMediaType() + '): ' + post.getPostId() + " (#" + post.getHashtag() + ")")
-  const db = DatabaseHandler.getDatabase()
+  console.log(`Saving (${post.getMediaType()}): ${post.getPostId()} (#${post.getHashtag()})`);
+  const db = DatabaseHandler.getDatabase();
 
   try {
-    db.run("INSERT INTO posts_from_hashtags (post_id, media_type, storage_path, permalink, caption, children_of, hashtag, posted, date, username) VALUES (?,?,?,?,?,?,?,?,?,?)", [
+    db.run('INSERT INTO posts_from_hashtags (post_id, media_type, storage_path, permalink, caption, children_of, hashtag, posted, date, username) VALUES (?,?,?,?,?,?,?,?,?,?)', [
       post.getPostId(),
       post.getMediaType(),
       post.getStoragePath(),
@@ -20,10 +19,10 @@ function savePostFromHashtag(post) {
       post.getHashtag(),
       post.isPosted(),
       post.getDate(),
-      post.getUsername()
-    ])
-  } catch(e) {
-    console.log(e)
+      post.getUsername(),
+    ]);
+  } catch (e) {
+    console.error(e);
   }
 }
 
@@ -31,31 +30,36 @@ function savePostFromHashtag(post) {
  * Gets a post from the database.
  */
 async function getPostFromId(id) {
-  const db = DatabaseHandler.getDatabase()
-  const sql = `SELECT * FROM posts_from_hashtags WHERE (post_id=? OR children_of=?);`;
-  return new Promise((resolve, reject) => {
+  const db = DatabaseHandler.getDatabase();
+  const sql = 'SELECT * FROM posts_from_hashtags WHERE (post_id=? OR children_of=?);';
+  return new Promise((resolve) => {
     db.all(sql, [id, id], (err, rows) => {
-      resolve(rows)
-    })
-  })
+      resolve(rows);
+    });
+  });
 }
 
 async function addHashtagToFetch(hashtag) {
-  const db = DatabaseHandler.getDatabase()
-  const sql = `INSERT INTO hashtags_to_fetch (hashtag) VALUES (?)`;
+  const db = DatabaseHandler.getDatabase();
+  const sql = 'INSERT INTO hashtags_to_fetch (hashtag) VALUES (?)';
   db.run(sql, [
-    hashtag
-  ])
+    hashtag,
+  ]);
 }
 
 async function getAllHashtagsToFetch() {
-  const db = DatabaseHandler.getDatabase()
-  const sql = `SELECT * FROM hashtags_to_fetch;`;
-  return new Promise((resolve, reject) => {
+  const db = DatabaseHandler.getDatabase();
+  const sql = 'SELECT * FROM hashtags_to_fetch;';
+  return new Promise((resolve) => {
     db.all(sql, (err, rows) => {
-      resolve(rows)
-    })
-  })
+      resolve(rows);
+    });
+  });
 }
 
-module.exports = { savePostFromHashtag, getPostFromId, addHashtagToFetch, getAllHashtagsToFetch }
+module.exports = {
+  savePostFromHashtag,
+  getPostFromId,
+  addHashtagToFetch,
+  getAllHashtagsToFetch,
+};
