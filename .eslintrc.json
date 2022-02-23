@@ -28,6 +28,11 @@
         "consistent-return": "off",
         "camelcase": "off",
         "no-multi-spaces": "off",
-        "array-callback-return": "off"
+        "array-callback-return": "off",
+        "no-trailing-spaces": "off",
+        "no-restricted-syntax": "off",
+        "lines-between-class-members": "off",
+        "default-param-last": "off",
+        "max-len": "off"
     }
 }

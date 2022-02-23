@@ -29,12 +29,13 @@ function savePostFromHashtag(post) {
 /**
  * Gets a post from the database.
  */
-async function getPostFromId(id) {
+async function getPostFromIdJSON(id) {
   const db = DatabaseHandler.getDatabase();
   const sql = 'SELECT * FROM posts_from_hashtags WHERE (post_id=? OR children_of=?);';
   return new Promise((resolve) => {
     db.all(sql, [id, id], (err, rows) => {
-      resolve(rows);
+      if (Object.keys(rows).length === 0) resolve(undefined);
+      else resolve(rows);
     });
   });
 }
@@ -59,7 +60,7 @@ async function getAllHashtagsToFetch() {
 
 module.exports = {
   savePostFromHashtag,
-  getPostFromId,
+  getPostFromIdJSON,
   addHashtagToFetch,
   getAllHashtagsToFetch,
 };

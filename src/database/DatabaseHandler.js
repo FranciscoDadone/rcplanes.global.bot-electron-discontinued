@@ -54,9 +54,9 @@ function connect() {
     }
     console.log('Database connected!');
   });
-//   database.on('trace', (err) => {
-//     console.log(err);
-//   });
+  //   database.on('trace', (err) => {
+  //     console.log(err);
+  //   });
   return database;
 }
 
