@@ -1,6 +1,6 @@
 # Project ignores
 python_ig_api_tests/private/
-src/api/private/credentials.js
+src/main/api/private/credentials.ts
 storage
 src/main/database/database.sqlite
 

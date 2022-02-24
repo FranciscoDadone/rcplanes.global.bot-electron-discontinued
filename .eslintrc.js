@@ -12,6 +12,12 @@ module.exports = {
     'no-restricted-syntax': 'off',
     'no-await-in-loop': 'off',
     'no-plusplus': 'off',
+    'promise/no-nesting': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
+    'promise/catch-or-return': 'off',
+    '@typescript-eslint/lines-between-class-members': 'off',
+    'global-require': 'off',
+    'import/prefer-default-export': 'off',
   },
   parserOptions: {
     ecmaVersion: 2020,

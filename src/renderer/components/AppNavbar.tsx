@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Navbar, Container, Offcanvas, Nav } from 'react-bootstrap';
 import { ipcRenderer } from 'electron';
 import AppStatus from './AppStatus';
 
 export default function AppNavbar() {
-  const [Status, setStatus] = useState('Fetching...');
+  const [Status, setStatus] = useState('Booting up...');
 
-  ipcRenderer.on('status', (event, newStatus) => {
+  ipcRenderer.on('status', (_event, newStatus) => {
     setStatus(newStatus);
   });
 
-//   ipcRenderer.invoke('status').then((newStatus) => {
-//     setStatus(newStatus)
-//   })
+  //   ipcRenderer.invoke('status').then((newStatus) => {
+  //     setStatus(newStatus)
+  //   })
 
   return (
     <Navbar bg="dark" variant="dark" expand={false}>
@@ -28,7 +28,9 @@ export default function AppNavbar() {
           placement="start"
         >
           <Offcanvas.Header closeButton>
-            <Offcanvas.Title id="offcanvasNavbarLabel">Dashboard</Offcanvas.Title>
+            <Offcanvas.Title id="offcanvasNavbarLabel">
+              Dashboard
+            </Offcanvas.Title>
           </Offcanvas.Header>
           <Offcanvas.Body>
             <Nav className="justify-content-start flex-grow-1 pe-3">
@@ -39,5 +41,5 @@ export default function AppNavbar() {
         </Navbar.Offcanvas>
       </Container>
     </Navbar>
-  )
+  );
 }

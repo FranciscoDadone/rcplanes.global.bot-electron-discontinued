@@ -1,5 +1,5 @@
 import download from 'download';
-import getRecentPosts from './api/getRecentPosts';
+import { getRecentPosts } from './api/getRecentPosts';
 import {
   savePostFromHashtag,
   getPostFromIdJSON,
@@ -26,6 +26,7 @@ async function saveMediaToStorage(
       filename: `${media_id}.mp4`,
     }).then(() => `./storage/${media_id}.mp4`);
   }
+  return null;
 }
 
 async function savePost(post: Post) {
@@ -36,8 +37,10 @@ async function savePost(post: Post) {
     post.getPostId(),
     post.getUsername()
   );
-  post.setStoragePath(path);
-  savePostFromHashtag(post);
+  if (path !== null) {
+    post.setStoragePath(path);
+    savePostFromHashtag(post);
+  }
 }
 
 async function saveAllPosts(posts: Post[]) {
@@ -65,11 +68,10 @@ async function startHashtagFetching(wait: boolean) {
   const hashtags: any = await getAllHashtagsToFetch();
   let allPosts: Post[] = [];
   for (const hashtag of hashtags) {
-    const postsOfHashtag = await getRecentPosts
-      .getRecentPosts(hashtag.hashtag)
-      .finally(() => {
-        console.log(`Finished fetching #${hashtag.hashtag}`);
-      });
+    Status.setStatus(`Fetching #${hashtag.hashtag}`);
+    const postsOfHashtag = await getRecentPosts(hashtag.hashtag).finally(() => {
+      console.log(`Finished fetching #${hashtag.hashtag}`);
+    });
     allPosts = allPosts.concat(postsOfHashtag);
   }
   Status.setStatus('Saving posts');

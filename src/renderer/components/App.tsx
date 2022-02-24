@@ -1,5 +1,4 @@
-import React from 'react';
-// import '../../../assets/css/App.css';
+import '../../../assets/css/App.css';
 import AppNavbar from './AppNavbar';
 
 function App() {
