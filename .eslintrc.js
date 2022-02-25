@@ -18,6 +18,7 @@ module.exports = {
     '@typescript-eslint/lines-between-class-members': 'off',
     'global-require': 'off',
     'import/prefer-default-export': 'off',
+    'promise/always-return': 'off',
   },
   parserOptions: {
     ecmaVersion: 2020,

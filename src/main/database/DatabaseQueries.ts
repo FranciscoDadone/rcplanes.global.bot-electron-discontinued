@@ -1,4 +1,4 @@
-import Post from 'main/models/Post';
+import { Post } from '../models/Post';
 
 const DatabaseHandler = require('./DatabaseHandler');
 
@@ -66,9 +66,38 @@ export async function getAllHashtagsToFetch(): Promise<{
   });
 }
 
+export async function getAllNonDeletedPosts(): Promise<Post[]> {
+  const db = DatabaseHandler.getDatabase();
+  const sql = 'SELECT * FROM posts_from_hashtags WHERE (posted=?)';
+  return new Promise((resolve) => {
+    db.all(sql, [false], (_err: any, rows: any) => {
+      const posts: Post[] = [];
+      for (const row of rows) {
+        posts.push(
+          new Post(
+            row.post_id,
+            row.media_type,
+            row.storage_path,
+            row.caption,
+            row.permalink,
+            row.hashtag,
+            row.posted,
+            row.date,
+            row.username,
+            row.children_of,
+            ''
+          )
+        );
+      }
+      resolve(posts);
+    });
+  });
+}
+
 module.exports = {
   savePostFromHashtag,
   getPostFromIdJSON,
   addHashtagToFetch,
   getAllHashtagsToFetch,
+  getAllNonDeletedPosts,
 };

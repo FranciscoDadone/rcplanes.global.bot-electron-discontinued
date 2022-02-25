@@ -3,12 +3,17 @@ import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { resolveHtmlPath } from './util';
+import { Post } from './models/Post';
 
 // Database
 import { connect, close } from './database/DatabaseHandler';
+import { getAllNonDeletedPosts } from './database/DatabaseQueries';
 
 // Tasks
 const BackgroundTasks = require('./BackgroundTasks');
+
+// Show posts (IPC)
+const showPostsIPC = require('./utils/ipc/sendShowPosts');
 
 export default class AppUpdater {
   constructor() {
@@ -124,6 +129,9 @@ app
     (async () => {
       connect();
       await new Promise((resolve) => setTimeout(resolve, 3000));
+      getAllNonDeletedPosts().then((postsDB: Post[]) => {
+        showPostsIPC.sendShowPosts(postsDB);
+      });
       BackgroundTasks.startHashtagFetching();
     })();
     app.on('activate', () => {

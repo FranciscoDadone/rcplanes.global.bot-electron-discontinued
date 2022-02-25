@@ -157,6 +157,7 @@ const configuration: webpack.Configuration = {
     },
     historyApiFallback: {
       verbose: true,
+      disableDotRule: true,
     },
     onBeforeSetupMiddleware() {
       console.log('Starting Main Process...');

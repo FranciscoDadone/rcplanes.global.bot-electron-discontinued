@@ -8,10 +8,6 @@ export function close() {
   console.log('Database closed.');
 }
 
-export function getDatabase() {
-  return database;
-}
-
 function createTables() {
   // posts_from_hashtags
   // sto: NOT NULL UNIQUE
@@ -41,7 +37,7 @@ function createTables() {
   database.run(sql, ['rcfly']);
 }
 
-export function connect() {
+export function connect(): sqlite3.Database {
   database = new sqlite3.Database(
     `${__dirname}/database.sqlite`,
     sqlite3.OPEN_READWRITE,
@@ -65,6 +61,10 @@ export function connect() {
   //   database.on('trace', (err) => {
   //     console.log(err);
   //   });
+  return database;
+}
+
+export function getDatabase(): sqlite3.Database {
   return database;
 }
 

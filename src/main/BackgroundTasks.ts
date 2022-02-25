@@ -8,7 +8,7 @@ import {
 import { Post } from './models/Post';
 import { addWatermark } from './utils/addWatermark';
 
-const Status = require('./utils/Status');
+const Status = require('./utils/ipc/Status');
 
 async function saveMediaToStorage(
   original_url: string,
@@ -64,6 +64,10 @@ async function startHashtagFetching(wait: boolean) {
     console.log('Waiting 20 minutes to fetch again.');
     await new Promise((resolve) => setTimeout(resolve, 1200000));
   }
+
+  // getAllNonDeletedPosts().then((postsDB: Post[]) => {
+  //   console.log(postsDB);
+  // });
 
   const hashtags: any = await getAllHashtagsToFetch();
   let allPosts: Post[] = [];
