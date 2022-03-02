@@ -13,7 +13,7 @@ function PostsPanel(props: { posts: Post[] | undefined }) {
       <Container>
         <Row className="fluid" xs="auto">
           {s.map((post) => (
-            <PostCard post={post} />
+            <PostCard post={post} key={post.post_id} />
           ))}
         </Row>
       </Container>

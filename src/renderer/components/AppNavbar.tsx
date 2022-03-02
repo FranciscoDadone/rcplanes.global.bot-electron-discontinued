@@ -10,10 +10,6 @@ export default function AppNavbar() {
     setStatus(newStatus);
   });
 
-  //   ipcRenderer.invoke('status').then((newStatus) => {
-  //     setStatus(newStatus)
-  //   })
-
   return (
     <Navbar bg="dark" variant="dark" expand={false}>
       <Container fluid>

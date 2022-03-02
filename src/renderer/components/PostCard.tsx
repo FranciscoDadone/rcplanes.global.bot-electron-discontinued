@@ -1,8 +1,11 @@
 import { Card, Button, ButtonGroup } from 'react-bootstrap';
-import { useState } from 'react';
+import path from 'path';
 import { Post } from '../../main/models/Post';
-import img from '/home/franciscodadone/Dev/rcplanes.global.bot/storage/17936021755948047.png';
 import '../../../assets/css/PostCard.css';
+
+const STORAGE_PATH = process.env.NODE_ENV
+  ? path.join(__dirname, '../../../../../../storage')
+  : path.join(process.resourcesPath, 'storage');
 
 function reviewPost(post: Post) {
   console.log(post);
@@ -10,16 +13,7 @@ function reviewPost(post: Post) {
 
 function PostCard(props: { post: Post }) {
   const { post } = props;
-
-  const [image, setImage] = useState<typeof import('*.png')>();
-
-  // console.log(`/home/franciscodadone/Dev/rcplanes.global.bot${post.storage_path.substring(1)}`);
-
-  const url = `/home/franciscodadone/Dev/rcplanes.global.bot${post.storage_path.substring(
-    1
-  )}`;
-
-    console.log(url)
+  if (post === undefined) return <div />;
 
   return (
     <div className="cardStyle">
@@ -30,7 +24,11 @@ function PostCard(props: { post: Post }) {
         onClick={() => reviewPost(post)}
       >
         <Card.Body>
-          <Card.Img variant="top" src={img} />
+          <Card.Img
+            variant="top"
+            // /home/franciscodadone/Dev/rcplanes.global.bot
+            src={`file://${STORAGE_PATH}${post.storage_path.substring(9)}`}
+          />
           <br />
           <ButtonGroup>
             <Button variant="danger">Delete</Button>
