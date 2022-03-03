@@ -89,7 +89,13 @@ export async function getRecentPosts(hashtag: string): Promise<Post> {
           const postsToReturn = [];
           for (let i = 0; i < postsCount; i++) {
             const post = data1.data[i];
-            const username = await getUsername(post);
+            let username = 'Unknown';
+            try {
+              username = await getUsername(post);
+            } catch (err) {
+              console.log("Couldn't get the username! ");
+              console.log(post);
+            }
 
             if (post.media_type === 'CAROUSEL_ALBUM') {
               // eslint-disable-next-line no-restricted-syntax

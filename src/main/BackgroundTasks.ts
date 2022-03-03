@@ -24,7 +24,7 @@ async function saveMediaToStorage(
   if (media_type === 'VIDEO') {
     return download(original_url, `./storage`, {
       filename: `${media_id}.mp4`,
-    }).then(() => `./storage/${media_id}.mp4`);
+    }).then(() => `${media_id}.mp4`);
   }
   return null;
 }

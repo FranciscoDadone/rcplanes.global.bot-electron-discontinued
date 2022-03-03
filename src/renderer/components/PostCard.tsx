@@ -1,4 +1,4 @@
-import { Card, Button, ButtonGroup } from 'react-bootstrap';
+import { Card, Button } from 'react-bootstrap';
 import path from 'path';
 import { Post } from '../../main/models/Post';
 import '../../../assets/css/PostCard.css';
@@ -11,6 +11,10 @@ function reviewPost(post: Post) {
   console.log(post);
 }
 
+function deletePost(post: Post) {
+  console.log(`delete: ${post}`);
+}
+
 function PostCard(props: { post: Post }) {
   const { post } = props;
   if (post === undefined) return <div />;
@@ -18,24 +22,37 @@ function PostCard(props: { post: Post }) {
   return (
     <div className="cardStyle">
       <Card
-        style={{ width: '18rem', cursor: 'pointer' }}
+        style={{
+          width: '18rem',
+          height: '25.5rem',
+        }}
         bg="dark"
         border="light"
-        onClick={() => reviewPost(post)}
       >
-        <Card.Body>
+        <Card.Body
+          className="container"
+          style={{ cursor: 'pointer' }}
+          onClick={() => reviewPost(post)}
+        >
           <Card.Img
             variant="top"
-            // /home/franciscodadone/Dev/rcplanes.global.bot
-            src={`file://${STORAGE_PATH}${post.storage_path.substring(9)}`}
+            src={`file://${STORAGE_PATH}/${post.storage_path}`}
           />
-          <br />
-          <ButtonGroup>
-            <Button variant="danger">Delete</Button>
-          </ButtonGroup>
         </Card.Body>
         <Card.Footer>
-          <small className="text-muted">Fetched: 00/00/0000</small>
+          <div className="footer-container">
+            <div>
+              <small className="text-muted">Fetched: {post.date}</small>
+            </div>
+            <div className="trashcan">
+              <Button variant="danger" onClick={() => deletePost(post)}>
+                <img
+                  src="https://img.icons8.com/ios-glyphs/25/000000/trash--v1.png"
+                  alt="trash can"
+                />
+              </Button>
+            </div>
+          </div>
         </Card.Footer>
       </Card>
     </div>

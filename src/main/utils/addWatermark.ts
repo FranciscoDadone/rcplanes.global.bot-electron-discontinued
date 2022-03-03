@@ -33,7 +33,7 @@ export async function addWatermark(
 
       const path = `./storage/${filename}.png`;
       await image.writeAsync(path);
-      return path;
+      return `${filename}.png`;
     })()
   );
 }
