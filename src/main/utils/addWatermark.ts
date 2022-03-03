@@ -6,9 +6,7 @@ export async function addWatermark(
   username: string
 ) {
   if (username === undefined) return;
-  const image = await Jimp.read({
-    url: image_url,
-  });
+  const image = await Jimp.read(image_url);
 
   return Jimp.loadFont(Jimp.FONT_SANS_32_WHITE).then((font: any) =>
     (async () => {
@@ -31,6 +29,8 @@ export async function addWatermark(
 
       image.blit(watermark, 10, imageHeight - finalHeight - 10);
 
+      const buff = await image.getBase64Async(Jimp.MIME_PNG);
+      return buff;
       const path = `./storage/${filename}.png`;
       await image.writeAsync(path);
       return `${filename}.png`;

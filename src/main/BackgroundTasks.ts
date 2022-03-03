@@ -6,20 +6,18 @@ import {
   getAllHashtagsToFetch,
 } from './database/DatabaseQueries';
 import { Post } from './models/Post';
-import { addWatermark } from './utils/addWatermark';
 
 const Status = require('./utils/ipc/Status');
 
 async function saveMediaToStorage(
   original_url: string,
   media_type: string,
-  media_id: string,
-  username: string
+  media_id: string
 ) {
   if (media_type === 'IMAGE') {
-    return addWatermark(original_url, media_id, username).then(
-      (img_path: string) => img_path
-    );
+    return download(original_url, `./storage`, {
+      filename: `${media_id}.png`,
+    }).then(() => `${media_id}.png`);
   }
   if (media_type === 'VIDEO') {
     return download(original_url, `./storage`, {
@@ -34,8 +32,7 @@ async function savePost(post: Post) {
   const path = await saveMediaToStorage(
     post.getMediaURL(),
     post.getMediaType(),
-    post.getPostId(),
-    post.getUsername()
+    post.getPostId()
   );
   if (path !== null) {
     post.setStoragePath(path);
@@ -64,10 +61,6 @@ async function startHashtagFetching(wait: boolean) {
     console.log('Waiting 20 minutes to fetch again.');
     await new Promise((resolve) => setTimeout(resolve, 1200000));
   }
-
-  // getAllNonDeletedPosts().then((postsDB: Post[]) => {
-  //   console.log(postsDB);
-  // });
 
   const hashtags: any = await getAllHashtagsToFetch();
   let allPosts: Post[] = [];

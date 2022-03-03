@@ -1,6 +1,7 @@
 import { Card, Button, Modal, Form } from 'react-bootstrap';
 import { useState } from 'react';
 import path from 'path';
+import { ipcRenderer } from 'electron';
 import { Post } from '../../main/models/Post';
 import '../../../assets/css/PostCard.css';
 
@@ -19,6 +20,32 @@ function PostCard(props: { post: Post }) {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const [imageModal, setImageModal] = useState(
+    `file://${STORAGE_PATH}/${post.storage_path}`
+  );
+
+  const [caption, setCaption] = useState(post.caption);
+  const [username, setUsername] = useState(post.username);
+
+  function postProcessImage(owner: string) {
+    if (post.media_type === 'IMAGE') {
+      ipcRenderer
+        .invoke('postProcessImage', {
+          path: `${STORAGE_PATH}/${post.storage_path}`,
+          username: owner,
+        })
+        .then((res) => {
+          setImageModal(res);
+        });
+    }
+  }
+
+  function handleQueue() {
+    console.log(imageModal);
+    console.log(caption);
+    console.log(username);
+  }
+
   if (post === undefined) return <div />;
 
   return (
@@ -35,7 +62,10 @@ function PostCard(props: { post: Post }) {
           <Card.Body
             className="container"
             style={{ cursor: 'pointer' }}
-            onClick={() => handleShow()}
+            onClick={() => {
+              handleShow();
+              postProcessImage(post.username);
+            }}
           >
             <Card.Img
               variant="top"
@@ -70,11 +100,7 @@ function PostCard(props: { post: Post }) {
           <div className="modal-container">
             <div className="modal-image">
               <div>
-                <img
-                  src={`file://${STORAGE_PATH}/${post.storage_path}`}
-                  alt="img"
-                  width={600}
-                />
+                <img src={imageModal} alt="img" width={600} />
               </div>
               <div style={{ display: 'flex' }}>
                 <div>
@@ -100,14 +126,26 @@ function PostCard(props: { post: Post }) {
                   controlId="exampleForm.ControlInput1"
                 >
                   <Form.Label>Username</Form.Label>
-                  <Form.Control type="text" value={post.username} />
+                  <Form.Control
+                    type="text"
+                    defaultValue={post.username}
+                    onChange={(e) => {
+                      postProcessImage(e.target.value);
+                      setUsername(e.target.value);
+                    }}
+                  />
                 </Form.Group>
                 <Form.Group
                   className="mb-3"
                   controlId="exampleForm.ControlTextarea1"
                 >
                   <Form.Label>Caption</Form.Label>
-                  <Form.Control as="textarea" value={post.caption} rows={20} />
+                  <Form.Control
+                    as="textarea"
+                    defaultValue={post.caption}
+                    rows={20}
+                    onChange={(e) => setCaption(e.target.value)}
+                  />
                 </Form.Group>
               </Form>
             </div>
@@ -117,8 +155,8 @@ function PostCard(props: { post: Post }) {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="success" onClick={handleClose}>
-            ✉️ Publish media
+          <Button variant="success" onClick={() => handleQueue()}>
+            ✉️ Queue media
           </Button>
         </Modal.Footer>
       </Modal>

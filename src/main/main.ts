@@ -15,6 +15,9 @@ const BackgroundTasks = require('./BackgroundTasks');
 // Show posts (IPC)
 const showPostsIPC = require('./utils/ipc/sendShowPosts');
 
+// PostProcessImage (IPC)
+require('./utils/ipc/postPorcessImage');
+
 export default class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';
