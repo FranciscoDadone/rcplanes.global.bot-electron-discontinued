@@ -1,4 +1,4 @@
-import { ipcMain } from 'electron';
+import { ipcMain, BrowserWindow } from 'electron';
 import {
   addPostToQueue,
   updatePostStatus,
@@ -15,6 +15,7 @@ ipcMain.handle(
     addPostToQueue(image, caption).catch(() => (err = true));
     updatePostStatus(id, 'posted');
     updatePostListUI();
+    BrowserWindow.getAllWindows()[0].webContents.send('showNewPostToast', id);
 
     return !err;
   }
