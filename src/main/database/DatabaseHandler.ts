@@ -21,7 +21,7 @@ function createTables() {
       permalink    TEXT NOT NULL,
       caption      TEXT,
       children_of  INTEGER,
-      posted       INTEGER,
+      status       TEXT,
       username     TEXT NOT NULL
     );`);
 
@@ -32,9 +32,14 @@ function createTables() {
 
   const sql = 'INSERT INTO hashtags_to_fetch (hashtag) VALUES (?)';
   database.run(sql, ['aeromodelismo']);
-  database.run(sql, ['rcplanes']);
-  database.run(sql, ['rcplaneshow']);
-  database.run(sql, ['rcfly']);
+  // database.run(sql, ['rcplanes']);
+  // database.run(sql, ['rcplaneshow']);
+  // database.run(sql, ['rcfly']);
+
+  // media_queue
+  database.exec(`CREATE TABLE media_queue (
+    image TEXT NOT NULL,
+    caption TEXT);`);
 }
 
 export function connect(): sqlite3.Database {

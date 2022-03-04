@@ -6,6 +6,7 @@ import {
   getAllHashtagsToFetch,
 } from './database/DatabaseQueries';
 import { Post } from './models/Post';
+import updatePostListUI from './utils/updatePostsListUI';
 
 const Status = require('./utils/ipc/Status');
 
@@ -73,6 +74,7 @@ async function startHashtagFetching(wait: boolean) {
   }
   Status.setStatus('Saving posts');
   await saveAllPosts(allPosts);
+  updatePostListUI();
   Status.setStatus('Idling...');
   startHashtagFetching(true);
 }

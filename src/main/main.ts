@@ -12,11 +12,17 @@ import { getAllNonDeletedPosts } from './database/DatabaseQueries';
 // Tasks
 const BackgroundTasks = require('./BackgroundTasks');
 
-// Show posts (IPC)
+// Show posts (IPC Handler)
 const showPostsIPC = require('./utils/ipc/sendShowPosts');
 
-// PostProcessImage (IPC)
+// PostProcessImage (IPC Handler)
 require('./utils/ipc/postPorcessImage');
+
+// SaveToQueue (IPC Handler)
+require('./utils/ipc/addToQueue');
+
+// SaveToQueue (IPC Handler)
+require('./utils/ipc/deletePost');
 
 export default class AppUpdater {
   constructor() {

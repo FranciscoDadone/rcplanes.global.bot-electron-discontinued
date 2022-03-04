@@ -4,7 +4,7 @@ export class Post {
   caption;
   permalink;
   hashtag = '';
-  posted = false;
+  status;
   date;
   username;
   storage_path;
@@ -18,7 +18,7 @@ export class Post {
     caption: string,
     permalink: string,
     hashtag: string,
-    posted: boolean,
+    status: string,
     date: string,
     username: string,
     children_of: string,
@@ -30,7 +30,7 @@ export class Post {
     this.caption = caption;
     this.permalink = permalink;
     this.hashtag = hashtag;
-    this.posted = posted;
+    this.status = status;
     this.date = date;
     this.username = username;
     this.children_of = children_of;
@@ -55,8 +55,8 @@ export class Post {
   getHashtag() {
     return this.hashtag;
   }
-  isPosted() {
-    return this.posted;
+  getStatus() {
+    return this.status;
   }
   getDate() {
     return this.date;

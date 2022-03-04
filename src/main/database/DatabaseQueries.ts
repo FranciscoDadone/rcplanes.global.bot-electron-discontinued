@@ -14,7 +14,7 @@ export function savePostFromHashtag(post: Post) {
 
   try {
     db.run(
-      'INSERT INTO posts_from_hashtags (post_id, media_type, storage_path, permalink, caption, children_of, hashtag, posted, date, username) VALUES (?,?,?,?,?,?,?,?,?,?)',
+      'INSERT INTO posts_from_hashtags (post_id, media_type, storage_path, permalink, caption, children_of, hashtag, status, date, username) VALUES (?,?,?,?,?,?,?,?,?,?)',
       [
         post.getPostId(),
         post.getMediaType(),
@@ -23,7 +23,7 @@ export function savePostFromHashtag(post: Post) {
         post.getCaption(),
         post.getChildrenOf(),
         post.getHashtag(),
-        post.isPosted(),
+        post.getStatus(),
         post.getDate(),
         post.getUsername(),
       ]
@@ -68,9 +68,9 @@ export async function getAllHashtagsToFetch(): Promise<{
 
 export async function getAllNonDeletedPosts(): Promise<Post[]> {
   const db = DatabaseHandler.getDatabase();
-  const sql = 'SELECT * FROM posts_from_hashtags WHERE (posted=?)';
+  const sql = 'SELECT * FROM posts_from_hashtags WHERE (status=?)';
   return new Promise((resolve) => {
-    db.all(sql, [false], (_err: any, rows: any) => {
+    db.all(sql, [''], (_err: any, rows: any) => {
       const posts: Post[] = [];
       for (const row of rows) {
         posts.push(
@@ -81,7 +81,7 @@ export async function getAllNonDeletedPosts(): Promise<Post[]> {
             row.caption,
             row.permalink,
             row.hashtag,
-            row.posted,
+            row.status,
             row.date,
             row.username,
             row.children_of,
@@ -94,10 +94,24 @@ export async function getAllNonDeletedPosts(): Promise<Post[]> {
   });
 }
 
+export async function addPostToQueue(image: string, caption: string) {
+  const db = DatabaseHandler.getDatabase();
+  const sql = 'INSERT INTO media_queue (image, caption) VALUES (?,?)';
+  db.run(sql, [image, caption]);
+}
+
+export async function updatePostStatus(postId: string, status: string) {
+  const db = DatabaseHandler.getDatabase();
+  const sql = `UPDATE posts_from_hashtags SET (status)=('${status}') WHERE post_id=${postId}`;
+  db.run(sql);
+}
+
 module.exports = {
   savePostFromHashtag,
   getPostFromIdJSON,
   addHashtagToFetch,
   getAllHashtagsToFetch,
   getAllNonDeletedPosts,
+  addPostToQueue,
+  updatePostStatus,
 };

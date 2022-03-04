@@ -9,10 +9,6 @@ const STORAGE_PATH = process.env.NODE_ENV
   ? path.join(__dirname, '../../../../../../storage')
   : path.join(process.resourcesPath, 'storage');
 
-function deletePost(post: Post) {
-  console.log(`delete: ${post}`);
-}
-
 function PostCard(props: { post: Post }) {
   const { post } = props;
 
@@ -25,9 +21,8 @@ function PostCard(props: { post: Post }) {
   );
 
   const [caption, setCaption] = useState(post.caption);
-  const [username, setUsername] = useState(post.username);
 
-  function postProcessImage(owner: string) {
+  const postProcessImage = (owner: string) => {
     if (post.media_type === 'IMAGE') {
       ipcRenderer
         .invoke('postProcessImage', {
@@ -38,13 +33,33 @@ function PostCard(props: { post: Post }) {
           setImageModal(res);
         });
     }
-  }
+  };
 
-  function handleQueue() {
-    console.log(imageModal);
-    console.log(caption);
-    console.log(username);
-  }
+  const handleQueue = () => {
+    ipcRenderer
+      .invoke('addToQueue', {
+        id: post.post_id,
+        image: imageModal,
+        caption,
+      })
+      .then((res) => {
+        if (res === true) {
+          handleClose();
+        }
+      });
+  };
+
+  const handleDelete = () => {
+    ipcRenderer
+      .invoke('deletePost', {
+        id: post.post_id,
+      })
+      .then((res) => {
+        if (res === true) {
+          handleClose();
+        }
+      });
+  };
 
   if (post === undefined) return <div />;
 
@@ -78,7 +93,7 @@ function PostCard(props: { post: Post }) {
                 <small className="text-muted">Fetched: {post.date}</small>
               </div>
               <div className="trashcan">
-                <Button variant="danger" onClick={() => deletePost(post)}>
+                <Button variant="danger" onClick={handleDelete}>
                   <img
                     src="https://img.icons8.com/ios-glyphs/25/000000/trash--v1.png"
                     alt="trash can"
@@ -131,7 +146,6 @@ function PostCard(props: { post: Post }) {
                     defaultValue={post.username}
                     onChange={(e) => {
                       postProcessImage(e.target.value);
-                      setUsername(e.target.value);
                     }}
                   />
                 </Form.Group>
@@ -143,7 +157,7 @@ function PostCard(props: { post: Post }) {
                   <Form.Control
                     as="textarea"
                     defaultValue={post.caption}
-                    rows={20}
+                    rows={16}
                     onChange={(e) => setCaption(e.target.value)}
                   />
                 </Form.Group>
@@ -154,6 +168,9 @@ function PostCard(props: { post: Post }) {
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close
+          </Button>
+          <Button variant="danger" onClick={handleDelete}>
+            Delete
           </Button>
           <Button variant="success" onClick={() => handleQueue()}>
             ✉️ Queue media
