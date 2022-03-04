@@ -1,31 +1,20 @@
-import { useState } from 'react';
-import { ipcRenderer } from 'electron';
+import { useEffect } from 'react';
+import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom';
 import '../../../assets/css/App.css';
-import { Post } from 'main/models/Post';
 import AppNavbar from './AppNavbar';
-import PostsPanel from './PostsPanel';
-import NewPostToast from './NewPostToast';
-import FloatingToastContainer from './FloatingToastContainer';
+import Configuration from './Configuration';
+import Explore from './Explore';
 
 function App() {
-  const [posts, setPosts] = useState<Post[]>();
-  const [toast, setToast] = useState<string>();
-
-  ipcRenderer.on('showPosts', (_ev, postsDB: Post[]) => {
-    setPosts(postsDB);
-  });
-
-  ipcRenderer.on('showNewPostToast', (_ev, postId) => {
-    setToast(postId);
-  });
-
   return (
     <>
+      {/* <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Explore />} />
+          <Route path="/configuration" element={<Configuration />} />
+        </Routes>
+      </BrowserRouter> */}
       <AppNavbar />
-      <PostsPanel posts={posts} />
-      <FloatingToastContainer>
-        <NewPostToast postId={toast} />
-      </FloatingToastContainer>
     </>
   );
 }

@@ -24,6 +24,9 @@ require('./utils/ipc/addToQueue');
 // SaveToQueue (IPC Handler)
 require('./utils/ipc/deletePost');
 
+// SaveToQueue (IPC Handler)
+require('./utils/ipc/getPosts');
+
 export default class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';
