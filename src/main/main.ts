@@ -33,7 +33,14 @@ require('./utils/ipc/getAllPosts');
 // HideModal (IPC Handler)
 require('./utils/ipc/hideModal');
 
+// getHashtagsToFetch (IPC Handler)
 require('./utils/ipc/getHashtagsToFetch');
+
+// deleteHashtag (IPC Handler)
+require('./utils/ipc/deleteHashtag');
+
+// addHashtag (IPC Handler)
+require('./utils/ipc/addHashtag');
 
 export default class AppUpdater {
   constructor() {

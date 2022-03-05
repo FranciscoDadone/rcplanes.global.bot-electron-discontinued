@@ -12,13 +12,20 @@ import { ipcRenderer } from 'electron';
 
 function ConfigurationPage() {
   const [validated, setValidated] = useState(false);
-  const [hashtagsToFetch, setHashtagsToFetch] = useState<[string]>(['null']);
+  const [hashtagsToFetch, setHashtagsToFetch] = useState<
+    [{ id: number; hashtag: string }]
+  >([{ id: 0, hashtag: 'null' }]);
+  const [addHashtagState, setAddHashtagState] = useState<string>('');
 
-  if (hashtagsToFetch[0] === 'null') ipcRenderer.invoke('getHashtagsToFetch');
+  if (hashtagsToFetch[0] && hashtagsToFetch[0].hashtag === 'null')
+    ipcRenderer.invoke('getHashtagsToFetch');
 
-  ipcRenderer.on('hashtagsToFetch', (_ev, data: [string]) => {
-    setHashtagsToFetch(data);
-  });
+  ipcRenderer.on(
+    'hashtagsToFetch',
+    (_ev, data: [{ id: number; hashtag: string }]) => {
+      setHashtagsToFetch(data);
+    }
+  );
 
   const handleSubmit = (event: any) => {
     const form = event.currentTarget;
@@ -38,10 +45,32 @@ function ConfigurationPage() {
 
   const handleDeleteHashtag = (index: number) => {
     const hashtags: any = [];
+    ipcRenderer.send('deleteHashtag', [hashtagsToFetch[index].hashtag]);
     hashtagsToFetch.forEach((h, i) => {
       if (i !== index) hashtags.push(h);
     });
     setHashtagsToFetch(hashtags);
+  };
+
+  const handleAddHashtag = () => {
+    const aux: any = hashtagsToFetch;
+    if (addHashtagState !== '') {
+      let lastElem: any = { id: 0, hashtag: '' };
+      if (hashtagsToFetch.length > 0) {
+        lastElem = hashtagsToFetch[hashtagsToFetch.length - 1];
+      }
+      aux.push({
+        id: lastElem.id + 1,
+        hashtag: addHashtagState,
+      });
+      ipcRenderer.send('addHashtag', [addHashtagState]);
+    }
+    setHashtagsToFetch(aux);
+    setAddHashtagState('');
+  };
+
+  const addHashtagChange = (e: any) => {
+    setAddHashtagState(e.target.value);
   };
 
   return (
@@ -92,6 +121,21 @@ function ConfigurationPage() {
               </Button>
             </InputGroup>
           ))}
+          <InputGroup className="mb-3">
+            <FormControl
+              aria-describedby="basic-addon2"
+              name="addHashtag"
+              value={addHashtagState}
+              onChange={addHashtagChange}
+            />
+            <Button
+              variant="outline-primary"
+              id="button-addon2"
+              onClick={handleAddHashtag}
+            >
+              Add hashtag
+            </Button>
+          </InputGroup>
         </Row>
 
         <h1>Authentication</h1>

@@ -130,6 +130,12 @@ export async function updatePostStatus(postId: string, status: string) {
   db.run(sql);
 }
 
+export async function deleteHashtag(hashtag: string) {
+  const db = DatabaseHandler.getDatabase();
+  const sql = `DELETE FROM hashtags_to_fetch WHERE (hashtag)=('${hashtag}');`;
+  db.run(sql);
+}
+
 module.exports = {
   savePostFromHashtag,
   getPostFromIdJSON,
@@ -139,4 +145,5 @@ module.exports = {
   addPostToQueue,
   updatePostStatus,
   getAllPostsJSON,
+  deleteHashtag,
 };
