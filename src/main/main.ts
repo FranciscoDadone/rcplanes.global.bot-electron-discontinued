@@ -24,8 +24,11 @@ require('./utils/ipc/addToQueue');
 // SaveToQueue (IPC Handler)
 require('./utils/ipc/deletePost');
 
-// SaveToQueue (IPC Handler)
+// GetPosts (IPC Handler)
 require('./utils/ipc/getPosts');
+
+// GetAllPosts (IPC Handler)
+require('./utils/ipc/getAllPosts');
 
 export default class AppUpdater {
   constructor() {

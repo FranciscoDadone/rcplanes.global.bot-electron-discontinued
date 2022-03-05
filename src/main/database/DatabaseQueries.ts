@@ -94,6 +94,25 @@ export async function getAllNonDeletedPosts(): Promise<Post[]> {
   });
 }
 
+export async function getAllPostsJSON(): Promise<{
+  postId: string;
+  date: string;
+  hashtag: string;
+  mediaType: string;
+  permalink: string;
+  childrenOf: string;
+  status: string;
+  owner: string;
+}> {
+  const db = DatabaseHandler.getDatabase();
+  const sql = 'SELECT * FROM posts_from_hashtags';
+  return new Promise((resolve) => {
+    db.all(sql, (_err: any, rows: any) => {
+      resolve(rows);
+    });
+  });
+}
+
 export async function addPostToQueue(image: string, caption: string) {
   const db = DatabaseHandler.getDatabase();
   const sql = 'INSERT INTO media_queue (image, caption) VALUES (?,?)';
@@ -114,4 +133,5 @@ module.exports = {
   getAllNonDeletedPosts,
   addPostToQueue,
   updatePostStatus,
+  getAllPostsJSON,
 };

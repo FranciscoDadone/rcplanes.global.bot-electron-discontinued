@@ -5,7 +5,7 @@ import PostsPanel from './PostsPanel';
 import NewPostToast from './NewPostToast';
 import FloatingToastContainer from './FloatingToastContainer';
 
-function Explore() {
+function ExplorePage() {
   const [posts, setPosts] = useState<Post[]>();
   const [toast, setToast] = useState<string>();
 
@@ -29,4 +29,4 @@ function Explore() {
   );
 }
 
-export default Explore;
+export default ExplorePage;

@@ -2,12 +2,13 @@ import { useState } from 'react';
 import { Navbar, Container, Nav } from 'react-bootstrap';
 import { ipcRenderer } from 'electron';
 import AppStatus from './AppStatus';
-import Explore from './Explore';
-import Configuration from './Configuration';
+import ExplorePage from './ExplorePage';
+import ConfigurationPage from './ConfigurationPage';
+import DatabasePage from './DatabasePage';
 
 export default function AppNavbar() {
   const [Status, setStatus] = useState('Booting up...');
-  const [Component, setComponent] = useState(<Explore />);
+  const [Component, setComponent] = useState(<ExplorePage />);
 
   ipcRenderer.on('status', (_event, newStatus) => {
     setStatus(newStatus);
@@ -26,11 +27,14 @@ export default function AppNavbar() {
               navbarScroll
               variant="pills"
             >
-              <Nav.Link onClick={() => setComponent(<Explore />)}>
+              <Nav.Link onClick={() => setComponent(<ExplorePage />)}>
                 Explore
               </Nav.Link>
-              <Nav.Link onClick={() => setComponent(<Configuration />)}>
+              <Nav.Link onClick={() => setComponent(<ConfigurationPage />)}>
                 Configuration
+              </Nav.Link>
+              <Nav.Link onClick={() => setComponent(<DatabasePage />)}>
+                Database
               </Nav.Link>
             </Nav>
             <Navbar.Text>
@@ -39,7 +43,7 @@ export default function AppNavbar() {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      {Component}
+      <div style={{ marginTop: '4rem' }}>{Component}</div>
     </>
   );
 }
