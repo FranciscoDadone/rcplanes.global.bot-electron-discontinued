@@ -26,6 +26,7 @@ function MediaModal(props: {
     ipcRenderer
       .invoke('deletePost', {
         id: post.post_id,
+        mediaType,
       })
       .then((res) => {
         if (res === true) {

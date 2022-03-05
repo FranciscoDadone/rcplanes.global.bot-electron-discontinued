@@ -24,6 +24,7 @@ function PostCard(props: { post: Post }) {
   const handleDelete = () => {
     ipcRenderer.invoke('deletePost', {
       id: post.post_id,
+      mediaType: post.media_type,
     });
   };
 
