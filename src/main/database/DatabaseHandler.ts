@@ -27,12 +27,12 @@ function createTables() {
 
   // hashtags_to_fetch
   database.exec(`CREATE TABLE hashtags_to_fetch (
-                    hashtag TEXT NOT NULL,
-                    banned_users TEXT);`);
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                hashtag TEXT NOT NULL);`);
 
   const sql = 'INSERT INTO hashtags_to_fetch (hashtag) VALUES (?)';
   database.run(sql, ['aeromodelismo']);
-  // database.run(sql, ['rcplanes']);
+  database.run(sql, ['rcplanes']);
   // database.run(sql, ['rcplaneshow']);
   // database.run(sql, ['rcfly']);
 

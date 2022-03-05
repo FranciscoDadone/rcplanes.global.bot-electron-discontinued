@@ -5,6 +5,10 @@ const showPostsIPC = require('./ipc/sendShowPosts');
 
 export default function updatePostsListUI() {
   getAllNonDeletedPosts().then((postsDB: Post[]) => {
-    showPostsIPC.sendShowPosts(postsDB);
+    let ret = postsDB;
+    if (postsDB.length === 0) {
+      ret = [new Post()];
+    }
+    showPostsIPC.sendShowPosts(ret);
   });
 }

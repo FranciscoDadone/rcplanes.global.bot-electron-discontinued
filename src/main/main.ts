@@ -33,6 +33,8 @@ require('./utils/ipc/getAllPosts');
 // HideModal (IPC Handler)
 require('./utils/ipc/hideModal');
 
+require('./utils/ipc/getHashtagsToFetch');
+
 export default class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';

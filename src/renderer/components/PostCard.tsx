@@ -42,7 +42,7 @@ function PostCard(props: { post: Post }) {
         <Card
           style={{
             width: '18rem',
-            height: '25.5rem',
+            height: '29rem',
           }}
           bg="dark"
           border="light"

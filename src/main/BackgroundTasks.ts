@@ -29,6 +29,7 @@ async function saveMediaToStorage(
 }
 
 async function savePost(post: Post) {
+  Status.setStatus(`Saving #${post.getPostId()}`);
   // eslint-disable-next-line max-len
   const path = await saveMediaToStorage(
     post.getMediaURL(),

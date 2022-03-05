@@ -12,29 +12,29 @@ export class Post {
   media_url;
 
   constructor(
-    post_id: string,
-    media_type: string,
-    storage_path: string,
-    caption: string,
-    permalink: string,
-    hashtag: string,
-    status: string,
-    date: string,
-    username: string,
-    children_of: string,
-    media_url: string
+    post_id?: string,
+    media_type?: string,
+    storage_path?: string,
+    caption?: string,
+    permalink?: string,
+    hashtag?: string,
+    status?: string,
+    date?: string,
+    username?: string,
+    children_of?: string,
+    media_url?: string
   ) {
-    this.post_id = post_id;
-    this.media_type = media_type;
-    this.storage_path = storage_path;
-    this.caption = caption;
-    this.permalink = permalink;
-    this.hashtag = hashtag;
-    this.status = status;
-    this.date = date;
-    this.username = username;
-    this.children_of = children_of;
-    this.media_url = media_url;
+    this.post_id = post_id ?? '';
+    this.media_type = media_type ?? '';
+    this.storage_path = storage_path ?? '';
+    this.caption = caption ?? '';
+    this.permalink = permalink ?? '';
+    this.hashtag = hashtag ?? '';
+    this.status = status ?? '';
+    this.date = date ?? '';
+    this.username = username ?? '';
+    this.children_of = children_of ?? '';
+    this.media_url = media_url ?? '';
   }
 
   getPostId() {
