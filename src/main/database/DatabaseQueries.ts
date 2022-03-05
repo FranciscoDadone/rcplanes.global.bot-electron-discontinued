@@ -113,10 +113,15 @@ export async function getAllPostsJSON(): Promise<{
   });
 }
 
-export async function addPostToQueue(image: string, caption: string) {
+export async function addPostToQueue(
+  media: string,
+  mediaType: string,
+  caption: string
+) {
   const db = DatabaseHandler.getDatabase();
-  const sql = 'INSERT INTO media_queue (image, caption) VALUES (?,?)';
-  db.run(sql, [image, caption]);
+  const sql =
+    'INSERT INTO media_queue (media, mediaType, caption) VALUES (?,?,?)';
+  db.run(sql, [media, mediaType, caption]);
 }
 
 export async function updatePostStatus(postId: string, status: string) {

@@ -30,6 +30,9 @@ require('./utils/ipc/getPosts');
 // GetAllPosts (IPC Handler)
 require('./utils/ipc/getAllPosts');
 
+// HideModal (IPC Handler)
+require('./utils/ipc/hideModal');
+
 export default class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';

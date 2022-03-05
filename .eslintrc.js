@@ -19,6 +19,7 @@ module.exports = {
     'global-require': 'off',
     'import/prefer-default-export': 'off',
     'promise/always-return': 'off',
+    'jsx-a11y/media-has-caption': 'off',
   },
   parserOptions: {
     ecmaVersion: 2020,

@@ -38,7 +38,8 @@ function createTables() {
 
   // media_queue
   database.exec(`CREATE TABLE media_queue (
-    image TEXT NOT NULL,
+    media TEXT NOT NULL,
+    mediaType TEXT NOT NULL,
     caption TEXT);`);
 }
 
