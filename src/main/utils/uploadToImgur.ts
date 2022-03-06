@@ -1,7 +1,7 @@
 const fs = require('fs');
 const { ImgurClient } = require('imgur');
 
-function upload(path: string) {
+export function uploadToImgur(path: string) {
   const client = new ImgurClient({ clientId: '3246fe4bdf4e7ef' });
   return client
     .upload({
@@ -13,4 +13,4 @@ function upload(path: string) {
     .then((data: any) => data.data.link);
 }
 
-module.exports = { upload };
+module.exports = { uploadToImgur };

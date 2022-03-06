@@ -31,9 +31,6 @@ export async function addWatermark(
 
       const buff = await image.getBase64Async(Jimp.MIME_PNG);
       return buff;
-      const path = `./storage/${filename}.png`;
-      await image.writeAsync(path);
-      return `${filename}.png`;
     })()
   );
 }

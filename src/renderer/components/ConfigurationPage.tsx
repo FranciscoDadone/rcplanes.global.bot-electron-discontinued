@@ -151,7 +151,13 @@ function ConfigurationPage() {
         </Row>
         <Row className="mb-3">
           <Form.Group as={Col} controlId="validationCustom01">
-            <Form.Label>Description boilerplate</Form.Label>
+            <Form.Label>
+              Description boilerplate
+              <br />
+              <small>
+                Avaible placeholders: (%description%, %username%, %post_link%)
+              </small>
+            </Form.Label>
             <Form.Control
               required
               defaultValue={configState?.description_boilerplate}
@@ -249,7 +255,7 @@ function ConfigurationPage() {
             </Form.Group>
           </Col>
         </Row>
-        <Button type="submit">Submit form</Button>
+        <Button type="submit">Save configuration</Button>
       </Form>
     </Container>
   );

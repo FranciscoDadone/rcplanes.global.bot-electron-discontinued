@@ -176,8 +176,8 @@ export async function setGeneralConfig(
   descriptionBoilerplate: string
 ) {
   const db = DatabaseHandler.getDatabase();
-  const sql = `UPDATE general_config SET (upload_rate, description_boilerplate)=(${uploadRate}, '${descriptionBoilerplate}') WHERE id=1`;
-  db.run(sql);
+  const sql = `UPDATE general_config SET (upload_rate, description_boilerplate)=(?,?) WHERE id=1`;
+  db.run(sql, [uploadRate, descriptionBoilerplate]);
 }
 
 module.exports = {

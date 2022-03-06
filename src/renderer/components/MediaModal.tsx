@@ -1,5 +1,5 @@
 import { Modal, Form, Button } from 'react-bootstrap';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { ipcRenderer } from 'electron';
 import path from 'path';
 import Media from './Media';
@@ -15,12 +15,23 @@ function MediaModal(props: {
   mediaType: string;
 }) {
   const { show, post, media, mediaType } = props;
-  const [caption, setCaption] = useState(post.caption);
-  const [username, setUsername] = useState(post.username);
+  const [caption, setCaption] = useState<string>();
   const [mediaModal, setMediaModal] = useState(media);
   const handleClose = () => {
     ipcRenderer.invoke('hideModal');
   };
+
+  if (caption === undefined) ipcRenderer.invoke('getGeneralConfig');
+  ipcRenderer.on(
+    'generalConfig',
+    (_ev, args: { description_boilerplate: string }) => {
+      const captionFormatted = args.description_boilerplate
+        .replace('%description%', post.caption)
+        .replace('%username%', post.username)
+        .replace('%post_link%', post.permalink);
+      setCaption(captionFormatted);
+    }
+  );
 
   const handleDelete = () => {
     ipcRenderer
@@ -28,14 +39,13 @@ function MediaModal(props: {
         id: post.post_id,
         mediaType,
       })
-      .then((res) => {
-        if (res === true) {
-          handleClose();
-        }
+      .then(() => {
+        handleClose();
       });
   };
 
   const handleQueue = () => {
+    handleClose();
     ipcRenderer
       .invoke('addToQueue', {
         id: post.post_id,
@@ -43,29 +53,24 @@ function MediaModal(props: {
         mediaType,
         caption,
       })
-      .then((res) => {
-        if (res === true) {
-          handleClose();
-        }
+      .catch((err) => {
+        throw new Error(`Error queueing media: ${err}`);
       });
   };
 
-  useEffect(() => {
-    if (show) {
-      setTimeout(() => {
-        if (post.media_type === 'IMAGE') {
-          ipcRenderer
-            .invoke('postProcessImage', {
-              path: `${STORAGE_PATH}/${post.storage_path}`,
-              username,
-            })
-            .then((res) => {
-              setMediaModal(res);
-            });
-        }
-      }, 1000);
+  const postProcessUsernameInImg = (username: string) => {
+    if (show && post.media_type === 'IMAGE') {
+      ipcRenderer
+        .invoke('postProcessImage', {
+          path: `${STORAGE_PATH}/${post.storage_path}`,
+          username,
+        })
+        .then((res) => {
+          setMediaModal(res);
+        });
     }
-  });
+  };
+  if (mediaModal === media) postProcessUsernameInImg(post.username);
 
   return (
     <>
@@ -107,7 +112,7 @@ function MediaModal(props: {
                     type="text"
                     defaultValue={post.username}
                     onChange={(e) => {
-                      setUsername(e.target.value);
+                      postProcessUsernameInImg(e.target.value);
                     }}
                   />
                 </Form.Group>
@@ -118,7 +123,7 @@ function MediaModal(props: {
                   <Form.Label>Caption</Form.Label>
                   <Form.Control
                     as="textarea"
-                    defaultValue={post.caption}
+                    defaultValue={caption}
                     rows={16}
                     onChange={(e) => setCaption(e.target.value)}
                   />
@@ -134,7 +139,7 @@ function MediaModal(props: {
           <Button variant="danger" onClick={handleDelete}>
             Delete
           </Button>
-          <Button variant="success" onClick={() => handleQueue()}>
+          <Button variant="success" onClick={handleQueue}>
             ✉️ Queue media
           </Button>
         </Modal.Footer>

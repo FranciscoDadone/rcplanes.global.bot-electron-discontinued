@@ -15,6 +15,13 @@ async function saveMediaToStorage(
   media_type: string,
   media_id: string
 ) {
+  if (
+    original_url === '' ||
+    media_id === '' ||
+    original_url === undefined ||
+    media_id === undefined
+  )
+    return null;
   if (media_type === 'IMAGE') {
     return download(original_url, `./storage`, {
       filename: `${media_id}.png`,
