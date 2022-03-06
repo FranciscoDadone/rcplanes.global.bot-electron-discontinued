@@ -40,8 +40,8 @@ ipcMain.handle(
     const pathToDelete = path.join(STORAGE_PATH, `${id}.${extension}`);
     fs.unlinkSync(pathToDelete);
 
-    updatePostListUI();
     BrowserWindow.getAllWindows()[0].webContents.send('showNewPostToast', id);
+    updatePostListUI();
 
     return !err;
   }

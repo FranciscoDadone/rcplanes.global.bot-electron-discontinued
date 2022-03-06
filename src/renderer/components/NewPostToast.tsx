@@ -1,10 +1,15 @@
 import { Toast } from 'react-bootstrap';
 import { useState } from 'react';
 
-function NewPostToast(props: { postId: string | undefined }) {
+function NewPostToast(props: { postId: string }) {
   const { postId } = props;
   const [show, setShow] = useState(true);
+  const [id, setId] = useState('');
 
+  if (id !== postId) {
+    setShow(true);
+    setId(postId);
+  }
   if (postId === undefined) return <></>;
 
   return (
@@ -14,7 +19,6 @@ function NewPostToast(props: { postId: string | undefined }) {
       show={show}
       delay={4000}
       autohide
-      animation
     >
       <Toast.Header>
         <strong className="me-auto">Media queued</strong>
