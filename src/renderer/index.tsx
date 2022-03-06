@@ -24,6 +24,10 @@ render(
       src="https://unpkg.com/react-bootstrap@next/dist/react-bootstrap.min.js"
       crossOrigin="true"
     />
+    <script
+      src="https://kit.fontawesome.com/4e85e69335.js"
+      crossOrigin="anonymous"
+    />
   </>,
   document.getElementById('root')
 );

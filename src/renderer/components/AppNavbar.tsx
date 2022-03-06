@@ -1,6 +1,12 @@
 import { useState } from 'react';
 import { Navbar, Container, Nav } from 'react-bootstrap';
 import { ipcRenderer } from 'electron';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faEarthAmerica,
+  faGear,
+  faDatabase,
+} from '@fortawesome/free-solid-svg-icons';
 import AppStatus from './AppStatus';
 import ExplorePage from './ExplorePage';
 import ConfigurationPage from './ConfigurationPage';
@@ -28,13 +34,16 @@ export default function AppNavbar() {
               variant="pills"
             >
               <Nav.Link onClick={() => setComponent(<ExplorePage />)}>
-                Explore
+                <FontAwesomeIcon icon={faEarthAmerica} />
+                &nbsp;Explore
               </Nav.Link>
               <Nav.Link onClick={() => setComponent(<ConfigurationPage />)}>
-                Configuration
+                <FontAwesomeIcon icon={faGear} />
+                &nbsp;Configuration
               </Nav.Link>
               <Nav.Link onClick={() => setComponent(<DatabasePage />)}>
-                Database
+                <FontAwesomeIcon icon={faDatabase} />
+                &nbsp;Database
               </Nav.Link>
             </Nav>
             <Navbar.Text>
