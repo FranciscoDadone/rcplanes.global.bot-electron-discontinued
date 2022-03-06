@@ -43,7 +43,15 @@ export default function AppNavbar() {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      <div style={{ marginTop: '4rem' }}>{Component}</div>
+      <div
+        style={{
+          marginTop: '4rem',
+          backgroundColor: '#282c34',
+          color: 'white',
+        }}
+      >
+        {Component}
+      </div>
     </>
   );
 }
