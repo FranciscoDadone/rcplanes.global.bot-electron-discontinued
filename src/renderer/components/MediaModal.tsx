@@ -52,6 +52,7 @@ function MediaModal(props: {
         media: mediaModal,
         mediaType,
         caption,
+        owner: post.username,
       })
       .catch((err) => {
         throw new Error(`Error queueing media: ${err}`);

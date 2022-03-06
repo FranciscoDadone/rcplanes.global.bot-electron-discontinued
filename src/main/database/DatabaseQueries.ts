@@ -116,12 +116,39 @@ export async function getAllPostsJSON(): Promise<{
 export async function addPostToQueue(
   media: string,
   mediaType: string,
-  caption: string
+  caption: string,
+  owner: string
 ) {
   const db = DatabaseHandler.getDatabase();
   const sql =
-    'INSERT INTO media_queue (media, mediaType, caption) VALUES (?,?,?)';
-  db.run(sql, [media, mediaType, caption]);
+    'INSERT INTO media_queue (media, mediaType, caption, owner) VALUES (?,?,?,?)';
+  db.run(sql, [media, mediaType, caption, owner]);
+}
+
+export async function removePostFromQueue(id: number) {
+  const db = DatabaseHandler.getDatabase();
+  const sql = `DELETE FROM media_queue WHERE id=${id}`;
+  db.run(sql);
+}
+
+export async function getQueue(): Promise<
+  [
+    {
+      id: number;
+      media: string;
+      mediaType: string;
+      caption: string;
+      owner: string;
+    }
+  ]
+> {
+  const db = DatabaseHandler.getDatabase();
+  const sql = 'SELECT * FROM media_queue;';
+  return new Promise((resolve) => {
+    db.all(sql, (_err: any, rows: any) => {
+      resolve(rows);
+    });
+  });
 }
 
 export async function updatePostStatus(postId: string, status: string) {
@@ -180,6 +207,45 @@ export async function setGeneralConfig(
   db.run(sql, [uploadRate, descriptionBoilerplate]);
 }
 
+export async function getUtil(): Promise<{
+  id: number;
+  last_upload_date: string;
+  total_posted_medias: number;
+  queued_medias: number;
+}> {
+  const db = DatabaseHandler.getDatabase();
+  const sql = 'SELECT * FROM util;';
+  return new Promise((resolve) => {
+    db.all(sql, (_err: any, rows: any) => {
+      resolve(rows[0]);
+    });
+  });
+}
+
+export async function setUtil(
+  last_upload_date: string,
+  total_posted_medias: number,
+  queued_medias: number
+) {
+  const db = DatabaseHandler.getDatabase();
+  const sql = `UPDATE util SET (last_upload_date, total_posted_medias, queued_medias)=(?,?,?) WHERE id=1`;
+  db.run(sql, [last_upload_date, total_posted_medias, queued_medias]);
+}
+
+export async function addPostToHistory(
+  ig_link: string,
+  imgur_link: string,
+  media_type: string,
+  owner: string,
+  caption: string,
+  date: string
+) {
+  const db = DatabaseHandler.getDatabase();
+  const sql =
+    'INSERT INTO posted_medias (ig_link, imgur_link, media_type, owner, caption, date) VALUES (?,?,?,?,?,?)';
+  db.run(sql, [ig_link, imgur_link, media_type, owner, caption, date]);
+}
+
 module.exports = {
   savePostFromHashtag,
   getPostFromIdJSON,
@@ -194,4 +260,9 @@ module.exports = {
   setCredentials,
   setGeneralConfig,
   getGeneralConfig,
+  setUtil,
+  getUtil,
+  getQueue,
+  removePostFromQueue,
+  addPostToHistory,
 };

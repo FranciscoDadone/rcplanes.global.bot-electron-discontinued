@@ -82,7 +82,6 @@ function ConfigurationPage() {
     if (form.checkValidity()) {
       const formData = new FormData(form);
       const formDataObj = Object.fromEntries(formData.entries());
-      console.log(formDataObj);
       ipcRenderer.send('setCredentials', {
         access_token: formDataObj.authToken,
         client_secret: formDataObj.clientSecret,

@@ -36,6 +36,7 @@ function createTables() {
 
   // media_queue
   database.exec(`CREATE TABLE media_queue (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     media TEXT NOT NULL,
     mediaType TEXT NOT NULL,
     caption TEXT);`);
@@ -61,6 +62,27 @@ function createTables() {
   database.run(
     'INSERT INTO general_config (upload_rate, description_boilerplate) VALUES (3, "%description%");'
   );
+
+  // util
+  database.exec(`CREATE TABLE util (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    last_upload_date TEXT NOT NULL,
+    total_posted_medias NUMBER NOT NULL,
+    queued_medias NUMBER NOT NULL);`);
+
+  database.run(
+    `INSERT INTO util (last_upload_date, total_posted_medias, queued_medias) VALUES (${new Date().toString()}, 0, 0);`
+  );
+
+  // posted_medias
+  database.exec(`CREATE TABLE posted_medias (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    ig_link TEXT NOT NULL,
+    imgur_link TEXT NOT NULL,
+    media_type TEXT NOT NULL,
+    owner TEXT NOT NULL,
+    caption TEXT NOT NULL,
+    date TEXT NOT NULL);`);
 }
 
 export function connect(): sqlite3.Database {

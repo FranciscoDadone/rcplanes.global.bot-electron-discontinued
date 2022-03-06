@@ -14,6 +14,7 @@ const unhandled = require('electron-unhandled');
 
 // Tasks
 const BackgroundTasks = require('./BackgroundTasks');
+const PostingTask = require('./PostingTask');
 
 // Show posts (IPC Handler)
 const showPostsIPC = require('./utils/ipc/sendShowPosts');
@@ -185,6 +186,7 @@ app
         showPostsIPC.sendShowPosts(postsDB);
       });
       BackgroundTasks.startHashtagFetching();
+      PostingTask.startPostingTask();
     })();
     app.on('activate', () => {
       // On macOS it's common to re-create a window in the app when the
