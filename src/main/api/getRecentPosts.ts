@@ -1,10 +1,11 @@
 import URLSearchParams from 'url';
 import { Post } from '../models/Post';
+import { getCredentials } from '../database/DatabaseQueries';
 
 const fetch = require('node-fetch');
-const credentials = require('./private/credentials');
 
 async function getHashtagId(hashtag: string): Promise<any> {
+  const credentials: any = await getCredentials();
   return new Promise((resolve) => {
     const res = fetch(
       `https://graph.facebook.com/v12.0/ig_hashtag_search?${new URLSearchParams.URLSearchParams(
@@ -61,6 +62,7 @@ async function getUsername(post: { permalink: any }): Promise<string> {
 }
 
 export async function getRecentPosts(hashtag: string): Promise<Post> {
+  const credentials: any = await getCredentials();
   return getHashtagId(hashtag).then((id) =>
     fetch(
       `https://graph.facebook.com/v12.0/${id}/recent_media?${new URLSearchParams.URLSearchParams(

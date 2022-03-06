@@ -33,14 +33,24 @@ function createTables() {
   const sql = 'INSERT INTO hashtags_to_fetch (hashtag) VALUES (?)';
   database.run(sql, ['aeromodelismo']);
   database.run(sql, ['rcplanes']);
-  // database.run(sql, ['rcplaneshow']);
-  // database.run(sql, ['rcfly']);
 
   // media_queue
   database.exec(`CREATE TABLE media_queue (
     media TEXT NOT NULL,
     mediaType TEXT NOT NULL,
     caption TEXT);`);
+
+  // credentials
+  database.exec(`CREATE TABLE credentials (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    access_token TEXT NOT NULL,
+    client_secret TEXT NOT NULL,
+    client_id TEXT NOT NULL,
+    ig_account_id TEXT NOT NULL);`);
+
+  database.run(
+    'INSERT INTO credentials (access_token, client_secret, client_id, ig_account_id) VALUES ("null","","","");'
+  );
 }
 
 export function connect(): sqlite3.Database {

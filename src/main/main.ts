@@ -42,6 +42,12 @@ require('./utils/ipc/deleteHashtag');
 // addHashtag (IPC Handler)
 require('./utils/ipc/addHashtag');
 
+// getCredentials (IPC Handler)
+require('./utils/ipc/getCredentials');
+
+// setCredentials (IPC Handler)
+require('./utils/ipc/setCredentials');
+
 export default class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';

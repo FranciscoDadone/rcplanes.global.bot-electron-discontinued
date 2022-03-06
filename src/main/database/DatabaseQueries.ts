@@ -136,6 +136,27 @@ export async function deleteHashtag(hashtag: string) {
   db.run(sql);
 }
 
+export async function getCredentials() {
+  const db = DatabaseHandler.getDatabase();
+  const sql = 'SELECT * FROM credentials;';
+  return new Promise((resolve) => {
+    db.all(sql, (_err: any, rows: any) => {
+      resolve(rows[0]);
+    });
+  });
+}
+
+export async function setCredentials(
+  access_token: string,
+  client_secret: string,
+  client_id: string,
+  ig_account_id: string
+) {
+  const db = DatabaseHandler.getDatabase();
+  const sql = `UPDATE credentials SET (access_token, client_secret, client_id, ig_account_id)=('${access_token}', '${client_secret}', '${client_id}', '${ig_account_id}') WHERE id=1`;
+  db.run(sql);
+}
+
 module.exports = {
   savePostFromHashtag,
   getPostFromIdJSON,
@@ -146,4 +167,6 @@ module.exports = {
   updatePostStatus,
   getAllPostsJSON,
   deleteHashtag,
+  getCredentials,
+  setCredentials,
 };
