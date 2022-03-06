@@ -1,5 +1,5 @@
 import path from 'path';
-import { app, BrowserWindow, shell } from 'electron';
+import { app, BrowserWindow, shell, dialog } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { resolveHtmlPath } from './util';
@@ -10,6 +10,7 @@ import { connect, close } from './database/DatabaseHandler';
 import { getAllNonDeletedPosts } from './database/DatabaseQueries';
 
 const electron = require('electron');
+const unhandled = require('electron-unhandled');
 
 // Tasks
 const BackgroundTasks = require('./BackgroundTasks');
@@ -55,6 +56,19 @@ require('./utils/ipc/getGeneralConfig');
 
 // setGeneralConfig (IPC Handler)
 require('./utils/ipc/setGeneralConfig');
+
+unhandled({
+  logger: (err: Error) => {
+    if (err.name === 'Error') {
+      const messageBoxOptions = {
+        type: 'error',
+        title: 'Error!',
+        message: `Something failed! Check if this makes sense.\n${err.message}`,
+      };
+      dialog.showMessageBoxSync(messageBoxOptions);
+    }
+  },
+});
 
 export default class AppUpdater {
   constructor() {

@@ -63,8 +63,8 @@ async function getUsername(post: { permalink: any }): Promise<string> {
 
 export async function getRecentPosts(hashtag: string): Promise<Post> {
   const credentials: any = await getCredentials();
-  return getHashtagId(hashtag).then((id) =>
-    fetch(
+  return getHashtagId(hashtag).then((id) => {
+    return fetch(
       `https://graph.facebook.com/v12.0/${id}/recent_media?${new URLSearchParams.URLSearchParams(
         {
           user_id: credentials.ig_account_id,
@@ -81,7 +81,12 @@ export async function getRecentPosts(hashtag: string): Promise<Post> {
         },
       }
     ).then((data: { json: () => Promise<any> }) =>
-      data.json().then((data1: { data: any[] }) => {
+      data.json().then((data1: { data: any; error: any }) => {
+        if (data1.error && data1.error.code === 190) {
+          throw new Error(
+            'Invalid authentication credentials. (Check Configuration section)'
+          );
+        }
         const postsCount = Object.keys(data1.data).length;
         console.log(
           `Got ${postsCount} posts (unfiltered) from Instagram API #${hashtag}`
@@ -137,8 +142,8 @@ export async function getRecentPosts(hashtag: string): Promise<Post> {
           return postsToReturn;
         })();
       })
-    )
-  );
+    );
+  });
 }
 
 module.exports = { getRecentPosts };
