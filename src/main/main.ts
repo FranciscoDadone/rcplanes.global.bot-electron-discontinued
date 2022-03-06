@@ -9,6 +9,8 @@ import { Post } from './models/Post';
 import { connect, close } from './database/DatabaseHandler';
 import { getAllNonDeletedPosts } from './database/DatabaseQueries';
 
+const electron = require('electron');
+
 // Tasks
 const BackgroundTasks = require('./BackgroundTasks');
 
@@ -96,10 +98,12 @@ const createWindow = async () => {
     return path.join(RESOURCES_PATH, ...paths);
   };
 
+  const { width, height } = electron.screen.getPrimaryDisplay().workAreaSize;
+
   mainWindow = new BrowserWindow({
     show: false,
-    width: 1024,
-    height: 728,
+    width,
+    height,
     icon: getAssetPath('icon.png'),
     webPreferences: {
       nodeIntegration: true,

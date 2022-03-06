@@ -11,6 +11,8 @@ import AppStatus from './AppStatus';
 import ExplorePage from './ExplorePage';
 import ConfigurationPage from './ConfigurationPage';
 import DatabasePage from './DatabasePage';
+import navbarBrand from '../../../assets/images/navbarBrand.jpg';
+import '../../../assets/css/AppNavbar.css';
 
 export default function AppNavbar() {
   const [Status, setStatus] = useState('Booting up...');
@@ -24,7 +26,11 @@ export default function AppNavbar() {
     <>
       <Navbar bg="dark" variant="dark" fixed="top" expand="lg">
         <Container fluid>
-          <Navbar.Brand href="#">rcplanes.global</Navbar.Brand>
+          <Navbar.Brand href="#">
+            <img src={navbarBrand} alt="navbrand" className="navbarBrand" />
+            &nbsp;&nbsp;RcPlanesBot
+          </Navbar.Brand>
+          <div className="verticalLine" />
           <Navbar.Toggle aria-controls="navbarScroll" />
           <Navbar.Collapse id="navbarScroll">
             <Nav
