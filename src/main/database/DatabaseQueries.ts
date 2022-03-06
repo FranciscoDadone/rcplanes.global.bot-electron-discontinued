@@ -157,6 +157,29 @@ export async function setCredentials(
   db.run(sql);
 }
 
+export async function getGeneralConfig(): Promise<{
+  id: number;
+  upload_rate: number;
+  description_boilerplate: string;
+}> {
+  const db = DatabaseHandler.getDatabase();
+  const sql = 'SELECT * FROM general_config;';
+  return new Promise((resolve) => {
+    db.all(sql, (_err: any, rows: any) => {
+      resolve(rows[0]);
+    });
+  });
+}
+
+export async function setGeneralConfig(
+  uploadRate: number,
+  descriptionBoilerplate: string
+) {
+  const db = DatabaseHandler.getDatabase();
+  const sql = `UPDATE general_config SET (upload_rate, description_boilerplate)=(${uploadRate}, '${descriptionBoilerplate}') WHERE id=1`;
+  db.run(sql);
+}
+
 module.exports = {
   savePostFromHashtag,
   getPostFromIdJSON,
@@ -169,4 +192,6 @@ module.exports = {
   deleteHashtag,
   getCredentials,
   setCredentials,
+  setGeneralConfig,
+  getGeneralConfig,
 };

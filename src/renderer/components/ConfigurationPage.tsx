@@ -23,6 +23,10 @@ function ConfigurationPage() {
     client_id: '',
     ig_account_id: '',
   });
+  const [configState, setConfigState] = useState<{
+    upload_rate: number;
+    description_boilerplate: string;
+  }>();
 
   if (hashtagsToFetch[0] && hashtagsToFetch[0].hashtag === 'null')
     ipcRenderer.invoke('getHashtagsToFetch');
@@ -52,6 +56,22 @@ function ConfigurationPage() {
     }
   );
 
+  if (configState === undefined || configState.description_boilerplate === '')
+    ipcRenderer.invoke('getGeneralConfig');
+
+  ipcRenderer.on(
+    'generalConfig',
+    (
+      _ev,
+      data: {
+        upload_rate: number;
+        description_boilerplate: string;
+      }
+    ) => {
+      setConfigState(data);
+    }
+  );
+
   const handleSubmit = (event: any) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -68,6 +88,10 @@ function ConfigurationPage() {
         client_secret: formDataObj.clientSecret,
         client_id: formDataObj.clientId,
         ig_account_id: formDataObj.igAccountId,
+      });
+      ipcRenderer.send('setGeneralConfig', {
+        upload_rate: formDataObj.uploadRate,
+        description_boilerplate: formDataObj.descriptionBoilerplate,
       });
       // eslint-disable-next-line no-alert
       alert(
@@ -119,7 +143,7 @@ function ConfigurationPage() {
             <Form.Control
               required
               type="number"
-              defaultValue="3"
+              defaultValue={configState?.upload_rate}
               name="uploadRate"
             />
             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
@@ -130,7 +154,7 @@ function ConfigurationPage() {
             <Form.Label>Description boilerplate</Form.Label>
             <Form.Control
               required
-              defaultValue=""
+              defaultValue={configState?.description_boilerplate}
               name="descriptionBoilerplate"
               as="textarea"
               rows={10}

@@ -11,7 +11,7 @@ import AppStatus from './AppStatus';
 import ExplorePage from './ExplorePage';
 import ConfigurationPage from './ConfigurationPage';
 import DatabasePage from './DatabasePage';
-import navbarBrand from '../../../assets/images/navbarBrand.jpg';
+import appIcon from '../../../assets/images/icon.png';
 import '../../../assets/css/AppNavbar.css';
 
 export default function AppNavbar() {
@@ -27,7 +27,7 @@ export default function AppNavbar() {
       <Navbar bg="dark" variant="dark" fixed="top" expand="lg">
         <Container fluid>
           <Navbar.Brand href="#">
-            <img src={navbarBrand} alt="navbrand" className="navbarBrand" />
+            <img src={appIcon} alt="App icon" className="navbarBrand" />
             &nbsp;&nbsp;RcPlanesBot
           </Navbar.Brand>
           <div className="verticalLine" />

@@ -51,6 +51,16 @@ function createTables() {
   database.run(
     'INSERT INTO credentials (access_token, client_secret, client_id, ig_account_id) VALUES ("null","","","");'
   );
+
+  // general_config
+  database.exec(`CREATE TABLE general_config (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    upload_rate NUMBER NOT NULL,
+    description_boilerplate TEXT NOT NULL);`);
+
+  database.run(
+    'INSERT INTO general_config (upload_rate, description_boilerplate) VALUES (3, "%description%");'
+  );
 }
 
 export function connect(): sqlite3.Database {

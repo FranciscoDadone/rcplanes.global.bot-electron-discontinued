@@ -50,6 +50,12 @@ require('./utils/ipc/getCredentials');
 // setCredentials (IPC Handler)
 require('./utils/ipc/setCredentials');
 
+// getGeneralConfig (IPC Handler)
+require('./utils/ipc/getGeneralConfig');
+
+// setGeneralConfig (IPC Handler)
+require('./utils/ipc/setGeneralConfig');
+
 export default class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';
@@ -104,7 +110,7 @@ const createWindow = async () => {
     show: false,
     width,
     height,
-    icon: getAssetPath('icon.png'),
+    icon: getAssetPath('images/icon.png'),
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
