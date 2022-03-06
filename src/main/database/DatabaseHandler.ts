@@ -39,7 +39,8 @@ function createTables() {
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     media TEXT NOT NULL,
     mediaType TEXT NOT NULL,
-    caption TEXT);`);
+    caption TEXT,
+    owner TEXT NOT NULL);`);
 
   // credentials
   database.exec(`CREATE TABLE credentials (
@@ -71,7 +72,7 @@ function createTables() {
     queued_medias NUMBER NOT NULL);`);
 
   database.run(
-    `INSERT INTO util (last_upload_date, total_posted_medias, queued_medias) VALUES (${new Date().toString()}, 0, 0);`
+    `INSERT INTO util (last_upload_date, total_posted_medias, queued_medias) VALUES ('${new Date().toString()}', 0, 0);`
   );
 
   // posted_medias
@@ -106,9 +107,9 @@ export function connect(): sqlite3.Database {
       console.log('Database connected!');
     }
   );
-  //   database.on('trace', (err) => {
-  //     console.log(err);
-  //   });
+  // database.on('trace', (err) => {
+  //   console.log(err);
+  // });
   return database;
 }
 

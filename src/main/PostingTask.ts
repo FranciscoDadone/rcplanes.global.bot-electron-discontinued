@@ -37,9 +37,17 @@ async function uploadNewPost() {
 
   console.log('Uploaded new post to Instagram!');
   removePostFromQueue(post.id);
+
+  const utils = await getUtil();
+  await setUtil(
+    new Date().toString(),
+    utils.total_posted_medias + 1,
+    utils.queued_medias - 1
+  );
 }
 
 export async function startPostingTask() {
+  return;
   const postingDelay = (await getGeneralConfig()).upload_rate;
   const utils = await getUtil();
 
@@ -47,13 +55,10 @@ export async function startPostingTask() {
   const nextPostDate = lastUploadDate;
   nextPostDate.setHours(nextPostDate.getHours() + postingDelay);
 
-  if (nextPostDate <= lastUploadDate) {
+  console.log('Next post date: ', nextPostDate.toString());
+
+  if (nextPostDate >= lastUploadDate) {
     await uploadNewPost();
-    await setUtil(
-      new Date().toString(),
-      utils.total_posted_medias + 1,
-      utils.queued_medias - 1
-    );
   }
 
   await new Promise((resolve) => setTimeout(resolve, 300000));

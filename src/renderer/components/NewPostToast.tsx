@@ -1,10 +1,10 @@
 import { Toast } from 'react-bootstrap';
 import { useState } from 'react';
 
-function NewPostToast(props: { postId: string }) {
+function NewPostToast(props: { postId: string | undefined }) {
   const { postId } = props;
   const [show, setShow] = useState(true);
-  const [id, setId] = useState('');
+  const [id, setId] = useState<string | undefined>('');
 
   if (id !== postId) {
     setShow(true);
