@@ -6,7 +6,7 @@ import {
   getAllHashtagsToFetch,
 } from './database/DatabaseQueries';
 import { Post } from './models/Post';
-import updatePostListUI from './utils/updatePostsListUI';
+import { updatePostsUI } from './utils/ipc/updatePostsUI';
 
 const Status = require('./utils/ipc/Status');
 
@@ -67,8 +67,8 @@ async function saveAllPosts(posts: Post[]) {
 
 async function startHashtagFetching(wait: boolean) {
   if (wait) {
-    console.log('Waiting 20 minutes to fetch again.');
-    await new Promise((resolve) => setTimeout(resolve, 1200000));
+    console.log('Waiting 1 hour to fetch again.');
+    await new Promise((resolve) => setTimeout(resolve, 3600000));
   }
 
   const hashtags: any = await getAllHashtagsToFetch();
@@ -90,7 +90,7 @@ async function startHashtagFetching(wait: boolean) {
   }
   Status.setStatus('Saving posts');
   await saveAllPosts(allPosts);
-  updatePostListUI();
+  updatePostsUI();
   Status.setStatus('Idling...');
   startHashtagFetching(true);
 }

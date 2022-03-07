@@ -7,7 +7,7 @@ import {
   Container,
   FormControl,
 } from 'react-bootstrap';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ipcRenderer } from 'electron';
 import '../../../assets/css/ConfigurationPage.css';
 
@@ -28,49 +28,47 @@ function ConfigurationPage() {
     description_boilerplate: string;
   }>();
 
-  if (hashtagsToFetch[0] && hashtagsToFetch[0].hashtag === 'null')
-    ipcRenderer.invoke('getHashtagsToFetch');
-
-  ipcRenderer.on(
-    'hashtagsToFetch',
-    (_ev, data: [{ id: number; hashtag: string }]) => {
-      setHashtagsToFetch(data);
+  useEffect(() => {
+    let isMounted = true;
+    if (hashtagsToFetch[0] && hashtagsToFetch[0].hashtag === 'null') {
+      ipcRenderer.invoke('getHashtagsToFetch').then((data) => {
+        if (isMounted) setHashtagsToFetch(data);
+      });
     }
-  );
+    return () => {
+      isMounted = false;
+    };
+  });
 
-  if (credentialsState && credentialsState.access_token === '')
-    ipcRenderer.invoke('getCredentials');
-
-  ipcRenderer.on(
-    'credentials',
-    (
-      _ev,
-      data: {
-        access_token: string;
-        client_secret: string;
-        client_id: string;
-        ig_account_id: string;
-      }
-    ) => {
-      setCredentialsState(data);
+  useEffect(() => {
+    let isMounted = true;
+    if (credentialsState && credentialsState.access_token === '') {
+      ipcRenderer
+        .invoke('getCredentials')
+        .then(
+          (data: {
+            access_token: string;
+            client_secret: string;
+            client_id: string;
+            ig_account_id: string;
+          }) => {
+            if (isMounted) setCredentialsState(data);
+          }
+        );
     }
-  );
+    return () => {
+      isMounted = false;
+    };
+  });
 
   if (configState === undefined || configState.description_boilerplate === '')
-    ipcRenderer.invoke('getGeneralConfig');
-
-  ipcRenderer.on(
-    'generalConfig',
-    (
-      _ev,
-      data: {
-        upload_rate: number;
-        description_boilerplate: string;
-      }
-    ) => {
-      setConfigState(data);
-    }
-  );
+    ipcRenderer
+      .invoke('getGeneralConfig')
+      .then(
+        (data: { upload_rate: number; description_boilerplate: string }) => {
+          setConfigState(data);
+        }
+      );
 
   const handleSubmit = (event: any) => {
     const form = event.currentTarget;

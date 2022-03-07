@@ -6,8 +6,8 @@ import {
   getUtil,
   setUtil,
 } from '../../database/DatabaseQueries';
-import updatePostListUI from '../updatePostsListUI';
 import { uploadToImgur } from '../uploadToImgur';
+import { updatePostsUI } from './updatePostsUI';
 
 const fs = require('fs');
 
@@ -52,7 +52,7 @@ ipcMain.handle(
     fs.unlinkSync(pathToDelete);
 
     BrowserWindow.getAllWindows()[0].webContents.send('showNewPostToast', id);
-    updatePostListUI();
+    updatePostsUI();
 
     const util = await getUtil();
     await setUtil(

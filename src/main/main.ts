@@ -3,11 +3,10 @@ import { app, BrowserWindow, shell, dialog } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { resolveHtmlPath } from './util';
-import { Post } from './models/Post';
 
 // Database
 import { connect, close } from './database/DatabaseHandler';
-import { getAllNonDeletedPosts } from './database/DatabaseQueries';
+import { updatePostsUI } from './utils/ipc/updatePostsUI';
 
 const electron = require('electron');
 const unhandled = require('electron-unhandled');
@@ -15,9 +14,6 @@ const unhandled = require('electron-unhandled');
 // Tasks
 const BackgroundTasks = require('./BackgroundTasks');
 const PostingTask = require('./PostingTask');
-
-// Show posts (IPC Handler)
-const showPostsIPC = require('./utils/ipc/sendShowPosts');
 
 // PostProcessImage (IPC Handler)
 require('./utils/ipc/postPorcessImage');
@@ -182,9 +178,7 @@ app
     (async () => {
       connect();
       await new Promise((resolve) => setTimeout(resolve, 3000));
-      getAllNonDeletedPosts().then((postsDB: Post[]) => {
-        showPostsIPC.sendShowPosts(postsDB);
-      });
+      updatePostsUI();
       BackgroundTasks.startHashtagFetching();
       PostingTask.startPostingTask();
     })();

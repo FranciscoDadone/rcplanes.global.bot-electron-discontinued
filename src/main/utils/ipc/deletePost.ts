@@ -1,7 +1,7 @@
 import { ipcMain } from 'electron';
 import path from 'path';
 import { updatePostStatus } from '../../database/DatabaseQueries';
-import updatePostListUI from '../updatePostsListUI';
+import { updatePostsUI } from './updatePostsUI';
 
 const fs = require('fs');
 
@@ -16,8 +16,8 @@ ipcMain.handle(
 
     let err = false;
     // eslint-disable-next-line no-return-assign
-    updatePostStatus(id, 'deleted').catch(() => (err = true));
-    updatePostListUI();
+    await updatePostStatus(id, 'deleted').catch(() => (err = true));
+    updatePostsUI();
 
     const extension = mediaType === 'IMAGE' ? 'png' : 'mp4';
     const pathToDelete = path.join(STORAGE_PATH, `${id}.${extension}`);

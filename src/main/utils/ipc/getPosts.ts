@@ -1,6 +1,7 @@
 import { ipcMain } from 'electron';
-import updatePostsListUI from '../updatePostsListUI';
+import { getAllNonDeletedPosts } from '../../database/DatabaseQueries';
 
 ipcMain.handle('getPosts', async () => {
-  updatePostsListUI();
+  const posts = await getAllNonDeletedPosts();
+  return posts;
 });

@@ -1,6 +1,6 @@
 import { Table } from 'react-bootstrap';
 import { ipcRenderer } from 'electron';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface DataType {
   post_id: string;
@@ -16,9 +16,16 @@ interface DataType {
 function DatabasePage() {
   const [posts1, setPosts1] = useState<[DataType]>();
 
-  if (posts1 === undefined) ipcRenderer.invoke('getAllPosts');
-  ipcRenderer.on('allPostsData', (_ev, data: [DataType]) => {
-    setPosts1(data);
+  useEffect(() => {
+    let isMounted = true;
+    if (posts1 === undefined) {
+      ipcRenderer.invoke('getAllPosts').then((data) => {
+        if (isMounted) setPosts1(data);
+      });
+    }
+    return () => {
+      isMounted = false;
+    };
   });
 
   let arr: [DataType] = [

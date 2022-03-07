@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ipcRenderer } from 'electron';
 import { Post } from 'main/models/Post';
 import PostsPanel from './PostsPanel';
@@ -10,9 +10,19 @@ function ExplorePage() {
   const [toast, setToast] = useState<string>();
 
   // Here it throws an error when you change between pages.
-  if (posts === undefined || posts.length === 0) ipcRenderer.invoke('getPosts');
 
-  ipcRenderer.on('showPosts', (_ev, postsDB: Post[]) => {
+  useEffect(() => {
+    let isMounted = true;
+    if (posts === undefined || posts.length === 0)
+      ipcRenderer.invoke('getPosts').then((data) => {
+        if (isMounted) setPosts(data);
+      });
+    return () => {
+      isMounted = false;
+    };
+  });
+
+  ipcRenderer.on('updatePosts', (_ev, postsDB: Post[]) => {
     setPosts(postsDB);
   });
 
