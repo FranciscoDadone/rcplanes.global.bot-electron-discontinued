@@ -87,7 +87,8 @@ export async function getRecentPosts(hashtag: string): Promise<Post> {
             'Invalid authentication credentials. (Check Configuration section)'
           );
         }
-        const postsCount = Object.keys(data1.data).length;
+        const postsCount =
+          data1.data === undefined ? 0 : Object.keys(data1.data).length;
         console.log(
           `Got ${postsCount} posts (unfiltered) from Instagram API #${hashtag}`
         );
@@ -103,13 +104,29 @@ export async function getRecentPosts(hashtag: string): Promise<Post> {
               console.log("Couldn't get the username! ");
               console.log(post);
             }
-
-            if (post.media_type === 'CAROUSEL_ALBUM') {
-              // eslint-disable-next-line no-restricted-syntax
-              for (const children of post.children.data) {
+            if (username !== 'rcplanes.global') {
+              if (post.media_type === 'CAROUSEL_ALBUM') {
+                // eslint-disable-next-line no-restricted-syntax
+                for (const children of post.children.data) {
+                  actualPost = new Post(
+                    children.id,
+                    children.media_type,
+                    '',
+                    post.caption,
+                    post.permalink,
+                    hashtag,
+                    '',
+                    new Date().toLocaleDateString('en-GB'),
+                    username,
+                    post.id,
+                    children.media_url
+                  );
+                  postsToReturn.push(actualPost);
+                }
+              } else {
                 actualPost = new Post(
-                  children.id,
-                  children.media_type,
+                  post.id,
+                  post.media_type,
                   '',
                   post.caption,
                   post.permalink,
@@ -117,26 +134,11 @@ export async function getRecentPosts(hashtag: string): Promise<Post> {
                   '',
                   new Date().toLocaleDateString('en-GB'),
                   username,
-                  post.id,
-                  children.media_url
+                  '0',
+                  post.media_url
                 );
                 postsToReturn.push(actualPost);
               }
-            } else {
-              actualPost = new Post(
-                post.id,
-                post.media_type,
-                '',
-                post.caption,
-                post.permalink,
-                hashtag,
-                '',
-                new Date().toLocaleDateString('en-GB'),
-                username,
-                '0',
-                post.media_url
-              );
-              postsToReturn.push(actualPost);
             }
           }
           return postsToReturn;

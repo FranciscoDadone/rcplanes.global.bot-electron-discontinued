@@ -47,7 +47,6 @@ async function uploadNewPost() {
 }
 
 export async function startPostingTask() {
-  return;
   const postingDelay = (await getGeneralConfig()).upload_rate;
   const utils = await getUtil();
 
@@ -57,7 +56,7 @@ export async function startPostingTask() {
 
   console.log('Next post date: ', nextPostDate.toString());
 
-  if (nextPostDate >= lastUploadDate) {
+  if (nextPostDate < lastUploadDate) {
     await uploadNewPost();
   }
 

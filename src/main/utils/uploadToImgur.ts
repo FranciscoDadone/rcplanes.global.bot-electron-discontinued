@@ -2,7 +2,6 @@ const fs = require('fs');
 const { ImgurClient } = require('imgur');
 
 export function uploadToImgur(path: string, mediaType: string) {
-  console.log('Creating Imgur link...');
   const client = new ImgurClient({ clientId: '3246fe4bdf4e7ef' });
   if (mediaType === 'IMAGE') {
     return client

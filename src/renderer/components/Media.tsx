@@ -6,7 +6,7 @@ function Media(props: { mediaType: string; media: string }) {
   if (mediaType === 'VIDEO') {
     return (
       <div>
-        <video className="video" controls>
+        <video className="video" autoPlay controls>
           <source src={media} type="video/mp4" />
         </video>
       </div>
