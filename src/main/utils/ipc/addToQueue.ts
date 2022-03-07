@@ -1,4 +1,4 @@
-import { ipcMain, BrowserWindow } from 'electron';
+import { ipcMain, Notification } from 'electron';
 import path from 'path';
 import {
   addPostToQueue,
@@ -8,6 +8,8 @@ import {
 } from '../../database/DatabaseQueries';
 import { uploadToImgur } from '../uploadToImgur';
 import { updatePostsUI } from './updatePostsUI';
+
+// const notifier = require('node-notifier');
 
 const fs = require('fs');
 
@@ -45,13 +47,18 @@ ipcMain.handle(
       // eslint-disable-next-line no-return-assign
       () => (err = true)
     );
-    updatePostStatus(id, 'posted');
+    await updatePostStatus(id, 'posted');
 
     const extension = mediaType === 'IMAGE' ? 'png' : 'mp4';
     const pathToDelete = path.join(STORAGE_PATH, `${id}.${extension}`);
     fs.unlinkSync(pathToDelete);
 
-    BrowserWindow.getAllWindows()[0].webContents.send('showNewPostToast', id);
+    const notif = {
+      title: 'RcPlanesGlobal',
+      body: `New post added to the queue! (${id})`,
+      icon: path.join(STORAGE_PATH, '../assets/images/icon.png'),
+    };
+    new Notification(notif).show();
     updatePostsUI();
 
     const util = await getUtil();

@@ -16,7 +16,7 @@ const BackgroundTasks = require('./BackgroundTasks');
 const PostingTask = require('./PostingTask');
 
 // PostProcessImage (IPC Handler)
-require('./utils/ipc/postPorcessImage');
+require('./utils/ipc/postProcessImage');
 
 // SaveToQueue (IPC Handler)
 require('./utils/ipc/addToQueue');
