@@ -1,5 +1,5 @@
 import download from 'download';
-import { getRecentPosts } from './api/getRecentPosts';
+import { getRecentPosts, getTopPosts } from './api/getPostsFromInstagram';
 import {
   savePostFromHashtag,
   getPostFromIdJSON,
@@ -75,10 +75,18 @@ async function startHashtagFetching(wait: boolean) {
   let allPosts: Post[] = [];
   for (const hashtag of hashtags) {
     Status.setStatus(`Fetching #${hashtag.hashtag}`);
-    const postsOfHashtag = await getRecentPosts(hashtag.hashtag).finally(() => {
-      console.log(`Finished fetching #${hashtag.hashtag}`);
+    const recentPostsOfHashtag = await getRecentPosts(hashtag.hashtag).finally(
+      () => {
+        console.log(
+          `Finished fetching the recent posts of #${hashtag.hashtag}`
+        );
+      }
+    );
+    const topPostsOfHashtag = await getTopPosts(hashtag.hashtag).finally(() => {
+      console.log(`Finished fetching the top posts of #${hashtag.hashtag}`);
     });
-    allPosts = allPosts.concat(postsOfHashtag);
+    allPosts = allPosts.concat(recentPostsOfHashtag);
+    allPosts = allPosts.concat(topPostsOfHashtag);
   }
   Status.setStatus('Saving posts');
   await saveAllPosts(allPosts);

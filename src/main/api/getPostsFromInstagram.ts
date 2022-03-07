@@ -61,11 +61,11 @@ async function getUsername(post: { permalink: any }): Promise<string> {
   });
 }
 
-export async function getRecentPosts(hashtag: string): Promise<Post> {
+export async function getPosts(hashtag: string, type: string): Promise<Post> {
   const credentials: any = await getCredentials();
   return getHashtagId(hashtag).then((id) => {
     return fetch(
-      `https://graph.facebook.com/v12.0/${id}/recent_media?${new URLSearchParams.URLSearchParams(
+      `https://graph.facebook.com/v12.0/${id}/${type}?${new URLSearchParams.URLSearchParams(
         {
           user_id: credentials.ig_account_id,
           access_token: credentials.access_token,
@@ -148,4 +148,12 @@ export async function getRecentPosts(hashtag: string): Promise<Post> {
   });
 }
 
-module.exports = { getRecentPosts };
+export async function getRecentPosts(hashtag: string) {
+  return getPosts(hashtag, 'recent_media');
+}
+
+export async function getTopPosts(hashtag: string) {
+  return getPosts(hashtag, 'top_media');
+}
+
+module.exports = { getRecentPosts, getTopPosts };
