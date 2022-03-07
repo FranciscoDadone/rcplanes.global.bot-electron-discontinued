@@ -1,3 +1,5 @@
+import { Notification } from 'electron';
+import path from 'path';
 import {
   getGeneralConfig,
   getQueue,
@@ -9,12 +11,21 @@ import {
 import { uploadToImgur } from './utils/uploadToImgur';
 import { publish } from './api/postContent';
 
+const RESOURCES_PATH = process.env.NODE_ENV
+  ? path.join(__dirname, '../../assets')
+  : path.join(process.resourcesPath, 'assets');
+
 async function uploadNewPost() {
   const mediaQueue = await getQueue();
   if (mediaQueue[0] === undefined) {
     console.log(
       'Cant upload to instagram because there is nothing on the queue :('
     );
+    new Notification({
+      title: 'RcPlanesGlobal',
+      body: 'Cant upload to instagram because there is nothing on the queue :(',
+      icon: path.join(RESOURCES_PATH, '/images/icon.png'),
+    }).show();
     return;
   }
   const post = mediaQueue[0];
@@ -25,7 +36,8 @@ async function uploadNewPost() {
   }
   await new Promise((resolve) => setTimeout(resolve, 20000));
 
-  const igLink = await publish(mediaLink, post.mediaType, post.caption);
+  let igLink = await publish(mediaLink, post.mediaType, post.caption);
+  if (igLink === undefined) igLink = 'unknown';
   addPostToHistory(
     igLink,
     mediaLink,
@@ -34,6 +46,12 @@ async function uploadNewPost() {
     post.caption,
     new Date().toString()
   );
+
+  new Notification({
+    title: 'RcPlanesGlobal',
+    body: 'Uploaded new post to Instagram!',
+    icon: path.join(RESOURCES_PATH, '/images/icon.png'),
+  }).show();
 
   console.log('Uploaded new post to Instagram!');
   removePostFromQueue(post.id);

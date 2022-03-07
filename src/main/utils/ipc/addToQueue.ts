@@ -42,7 +42,6 @@ ipcMain.handle(
     }
 
     let err = false;
-    // eslint-disable-next-line no-return-assign
     addPostToQueue(mediaToSave, mediaType, caption, owner).catch(
       // eslint-disable-next-line no-return-assign
       () => (err = true)
@@ -53,12 +52,11 @@ ipcMain.handle(
     const pathToDelete = path.join(STORAGE_PATH, `${id}.${extension}`);
     fs.unlinkSync(pathToDelete);
 
-    const notif = {
+    new Notification({
       title: 'RcPlanesGlobal',
       body: `New post added to the queue! (${id})`,
       icon: path.join(STORAGE_PATH, '../assets/images/icon.png'),
-    };
-    new Notification(notif).show();
+    }).show();
     updatePostsUI();
 
     const util = await getUtil();

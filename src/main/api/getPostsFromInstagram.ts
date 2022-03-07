@@ -30,7 +30,7 @@ async function getHashtagId(hashtag: string): Promise<any> {
           console.log(data1);
           resolve(data1);
         }
-        if (data1.data[0].id === undefined) {
+        if (data1.data === undefined) {
           console.log('================ ERROR ================');
           console.log(data1.error.message);
           console.log('=======================================');

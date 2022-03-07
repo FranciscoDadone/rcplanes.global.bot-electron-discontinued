@@ -188,6 +188,7 @@ export async function getGeneralConfig(): Promise<{
   id: number;
   upload_rate: number;
   description_boilerplate: string;
+  hashtag_fetching_enabled: boolean;
 }> {
   const db = DatabaseHandler.getDatabase();
   const sql = 'SELECT * FROM general_config;';
@@ -200,11 +201,12 @@ export async function getGeneralConfig(): Promise<{
 
 export async function setGeneralConfig(
   uploadRate: number,
-  descriptionBoilerplate: string
+  descriptionBoilerplate: string,
+  hashtag_fetching_enabled: boolean
 ) {
   const db = DatabaseHandler.getDatabase();
-  const sql = `UPDATE general_config SET (upload_rate, description_boilerplate)=(?,?) WHERE id=1`;
-  db.run(sql, [uploadRate, descriptionBoilerplate]);
+  const sql = `UPDATE general_config SET (upload_rate, description_boilerplate, hashtag_fetching_enabled)=(?,?,?) WHERE id=1`;
+  db.run(sql, [uploadRate, descriptionBoilerplate, hashtag_fetching_enabled]);
 }
 
 export async function getUtil(): Promise<{

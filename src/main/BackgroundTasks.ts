@@ -4,6 +4,7 @@ import {
   savePostFromHashtag,
   getPostFromIdJSON,
   getAllHashtagsToFetch,
+  getGeneralConfig,
 } from './database/DatabaseQueries';
 import { Post } from './models/Post';
 import { updatePostsUI } from './utils/ipc/updatePostsUI';
@@ -70,27 +71,33 @@ async function startHashtagFetching(wait: boolean) {
     console.log('Waiting 1 hour to fetch again.');
     await new Promise((resolve) => setTimeout(resolve, 3600000));
   }
-
-  const hashtags: any = await getAllHashtagsToFetch();
-  let allPosts: Post[] = [];
-  for (const hashtag of hashtags) {
-    Status.setStatus(`Fetching #${hashtag.hashtag}`);
-    const recentPostsOfHashtag = await getRecentPosts(hashtag.hashtag).finally(
-      () => {
+  const config = await getGeneralConfig();
+  if (config.hashtag_fetching_enabled) {
+    const hashtags: any = await getAllHashtagsToFetch();
+    let allPosts: Post[] = [];
+    for (const hashtag of hashtags) {
+      Status.setStatus(`Fetching #${hashtag.hashtag}`);
+      const recentPostsOfHashtag = await getRecentPosts(
+        hashtag.hashtag
+      ).finally(() => {
         console.log(
           `Finished fetching the recent posts of #${hashtag.hashtag}`
         );
-      }
-    );
-    const topPostsOfHashtag = await getTopPosts(hashtag.hashtag).finally(() => {
-      console.log(`Finished fetching the top posts of #${hashtag.hashtag}`);
-    });
-    allPosts = allPosts.concat(recentPostsOfHashtag);
-    allPosts = allPosts.concat(topPostsOfHashtag);
+      });
+      const topPostsOfHashtag = await getTopPosts(hashtag.hashtag).finally(
+        () => {
+          console.log(`Finished fetching the top posts of #${hashtag.hashtag}`);
+        }
+      );
+      allPosts = allPosts.concat(recentPostsOfHashtag);
+      allPosts = allPosts.concat(topPostsOfHashtag);
+    }
+    Status.setStatus('Saving posts');
+    await saveAllPosts(allPosts);
+    updatePostsUI();
+  } else {
+    console.log('Fetching disabled :(');
   }
-  Status.setStatus('Saving posts');
-  await saveAllPosts(allPosts);
-  updatePostsUI();
   Status.setStatus('Idling...');
   startHashtagFetching(true);
 }

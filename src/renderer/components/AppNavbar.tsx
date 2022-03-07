@@ -6,11 +6,15 @@ import {
   faEarthAmerica,
   faGear,
   faDatabase,
+  faList,
+  faCircleInfo,
 } from '@fortawesome/free-solid-svg-icons';
 import AppStatus from './AppStatus';
 import ExplorePage from './ExplorePage';
 import ConfigurationPage from './ConfigurationPage';
 import DatabasePage from './DatabasePage';
+import QueuePage from './QueuePage';
+import InfoPage from './InfoPage';
 import appIcon from '../../../assets/images/icon.png';
 import '../../../assets/css/AppNavbar.css';
 
@@ -50,6 +54,14 @@ export default function AppNavbar() {
               <Nav.Link onClick={() => setComponent(<DatabasePage />)}>
                 <FontAwesomeIcon icon={faDatabase} />
                 &nbsp;Database
+              </Nav.Link>
+              <Nav.Link onClick={() => setComponent(<QueuePage />)}>
+                <FontAwesomeIcon icon={faList} />
+                &nbsp;Queue
+              </Nav.Link>
+              <Nav.Link onClick={() => setComponent(<InfoPage />)}>
+                <FontAwesomeIcon icon={faCircleInfo} />
+                &nbsp;Info
               </Nav.Link>
             </Nav>
             <Navbar.Text>

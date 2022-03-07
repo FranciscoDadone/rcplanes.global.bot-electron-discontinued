@@ -26,6 +26,7 @@ function ConfigurationPage() {
   const [configState, setConfigState] = useState<{
     upload_rate: number;
     description_boilerplate: string;
+    hashtag_fetching_enabled: boolean;
   }>();
 
   useEffect(() => {
@@ -65,7 +66,11 @@ function ConfigurationPage() {
     ipcRenderer
       .invoke('getGeneralConfig')
       .then(
-        (data: { upload_rate: number; description_boilerplate: string }) => {
+        (data: {
+          upload_rate: number;
+          description_boilerplate: string;
+          hashtag_fetching_enabled: boolean;
+        }) => {
           setConfigState(data);
         }
       );
@@ -89,6 +94,7 @@ function ConfigurationPage() {
       ipcRenderer.send('setGeneralConfig', {
         upload_rate: formDataObj.uploadRate,
         description_boilerplate: formDataObj.descriptionBoilerplate,
+        hashtag_fetching_enabled: formDataObj.hashtagFetchingSwitch === 'on',
       });
       // eslint-disable-next-line no-alert
       alert(
@@ -134,7 +140,7 @@ function ConfigurationPage() {
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
         <hr />
         <h1>General configuration</h1>
-        <Row className="mb-3">
+        <Row className="mb-2">
           <Form.Group as={Col} md="2" controlId="validationCustom01">
             <Form.Label>Upload rate in hours</Form.Label>
             <Form.Control
@@ -144,6 +150,16 @@ function ConfigurationPage() {
               name="uploadRate"
             />
             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group as={Col} md="2" controlId="validationCustom01">
+            <Form.Check
+              type="switch"
+              name="hashtagFetchingSwitch"
+              label="Fetching"
+              defaultChecked={configState?.hashtag_fetching_enabled}
+              className="hashtagFetchingSwitch"
+            />
           </Form.Group>
         </Row>
         <Row className="mb-3">
@@ -252,7 +268,10 @@ function ConfigurationPage() {
             </Form.Group>
           </Col>
         </Row>
-        <Button type="submit">Save configuration</Button>
+        <br />
+        <Button type="submit" className="saveButton">
+          Save configuration
+        </Button>
       </Form>
     </Container>
   );

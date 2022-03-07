@@ -58,10 +58,11 @@ function createTables() {
   database.exec(`CREATE TABLE general_config (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     upload_rate NUMBER NOT NULL,
-    description_boilerplate TEXT NOT NULL);`);
+    description_boilerplate TEXT NOT NULL,
+    hashtag_fetching_enabled INTEGER NOT NULL);`);
 
   database.run(
-    'INSERT INTO general_config (upload_rate, description_boilerplate) VALUES (3, "%description%");'
+    'INSERT INTO general_config (upload_rate, description_boilerplate, hashtag_fetching_enabled) VALUES (3, "%description%", true);'
   );
 
   // util

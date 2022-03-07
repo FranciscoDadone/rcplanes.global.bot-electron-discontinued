@@ -1,4 +1,4 @@
-import { ipcMain, BrowserWindow } from 'electron';
+import { ipcMain } from 'electron';
 import { getGeneralConfig } from '../../database/DatabaseQueries';
 
 ipcMain.handle('getGeneralConfig', async () => {
@@ -6,6 +6,7 @@ ipcMain.handle('getGeneralConfig', async () => {
     id: number;
     upload_rate: number;
     description_boilerplate: string;
+    fetching_enabled: boolean;
   } = await getGeneralConfig();
   return config;
 });
