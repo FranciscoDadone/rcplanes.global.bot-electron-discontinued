@@ -21,7 +21,11 @@ ipcMain.handle(
 
     const extension = mediaType === 'IMAGE' ? 'png' : 'mp4';
     const pathToDelete = path.join(STORAGE_PATH, `${id}.${extension}`);
-    fs.unlinkSync(pathToDelete);
+    try {
+      fs.unlinkSync(pathToDelete);
+    } catch (_err) {
+      console.log('Aready deleted! (', pathToDelete, ')');
+    }
 
     return !err;
   }

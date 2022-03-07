@@ -1,7 +1,8 @@
 import { Modal, Form, Button } from 'react-bootstrap';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ipcRenderer } from 'electron';
 import path from 'path';
+import { getGeneralConfig } from '../../main/database/DatabaseQueries';
 import Media from './Media';
 
 const STORAGE_PATH = process.env.NODE_ENV
@@ -17,21 +18,27 @@ function MediaModal(props: {
   const { show, post, media, mediaType } = props;
   const [caption, setCaption] = useState<string>();
   const [mediaModal, setMediaModal] = useState(media);
+
+  useEffect(() => {
+    let isMounted = true;
+    ipcRenderer.invoke('getGeneralConfig').then((data) => {
+      if (isMounted) {
+        const captionFormatted = data.description_boilerplate
+          .replace('%description%', post.caption)
+          .replace('%username%', post.username)
+          .replace('%post_link%', post.permalink);
+        setCaption(captionFormatted);
+      }
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  });
+
   const handleClose = () => {
     ipcRenderer.invoke('hideModal');
   };
-
-  if (caption === undefined) ipcRenderer.invoke('getGeneralConfig');
-  ipcRenderer.on(
-    'generalConfig',
-    (_ev, args: { description_boilerplate: string }) => {
-      const captionFormatted = args.description_boilerplate
-        .replace('%description%', post.caption)
-        .replace('%username%', post.username)
-        .replace('%post_link%', post.permalink);
-      setCaption(captionFormatted);
-    }
-  );
 
   const handleDelete = () => {
     ipcRenderer

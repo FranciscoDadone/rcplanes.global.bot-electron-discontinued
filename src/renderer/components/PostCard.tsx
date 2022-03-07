@@ -12,13 +12,16 @@ const STORAGE_PATH = process.env.NODE_ENV
 
 function PostCard(props: { post: Post }) {
   const { post } = props;
+  let isMounted = true;
 
   let previewSrc = `file://${STORAGE_PATH}/${post.storage_path}`;
 
   const [show, setShow] = useState(false);
-  const handleShow = () => setShow(true);
+  const handleShow = () => {
+    if (isMounted) setShow(true);
+  };
   ipcRenderer.on('hideModalToRenderer', (_ev, s) => {
-    setShow(s);
+    if (isMounted) setShow(s);
   });
 
   const handleDelete = () => {
@@ -26,9 +29,13 @@ function PostCard(props: { post: Post }) {
       id: post.post_id,
       mediaType: post.media_type,
     });
+    isMounted = false;
   };
 
-  if (post === undefined) return <div />;
+  if (post === undefined) {
+    isMounted = false;
+    return <div />;
+  }
 
   if (post.media_type === 'VIDEO') {
     previewSrc = `file://${path.join(

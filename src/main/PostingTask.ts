@@ -53,10 +53,16 @@ export async function startPostingTask() {
   const lastUploadDate = new Date(utils.last_upload_date);
   const nextPostDate = lastUploadDate;
   nextPostDate.setHours(nextPostDate.getHours() + postingDelay);
+  const shouldPost = nextPostDate < new Date();
 
-  console.log('Next post date: ', nextPostDate.toString());
-
-  if (nextPostDate < lastUploadDate) {
+  console.log(
+    'Next post date: ',
+    nextPostDate.toString(),
+    ' (Should post?:',
+    shouldPost,
+    ')'
+  );
+  if (shouldPost) {
     await uploadNewPost();
   }
 

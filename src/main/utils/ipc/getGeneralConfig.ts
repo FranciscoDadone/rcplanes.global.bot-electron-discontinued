@@ -11,4 +11,5 @@ ipcMain.handle('getGeneralConfig', async () => {
     upload_rate: config.upload_rate,
     description_boilerplate: config.description_boilerplate,
   });
+  return config;
 });
