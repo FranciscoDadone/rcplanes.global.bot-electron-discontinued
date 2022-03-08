@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Navbar, Container, Nav } from 'react-bootstrap';
-import { ipcRenderer } from 'electron';
+import { ipcRenderer, shell } from 'electron';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faEarthAmerica,
@@ -30,7 +30,12 @@ export default function AppNavbar() {
     <>
       <Navbar bg="dark" variant="dark" fixed="top" expand="lg">
         <Container fluid>
-          <Navbar.Brand href="#">
+          <Navbar.Brand
+            className="navBrand"
+            onClick={() =>
+              shell.openExternal('https://www.instagram.com/rcplanes.global/')
+            }
+          >
             <img src={appIcon} alt="App icon" className="navbarBrand" />
             &nbsp;&nbsp;RcPlanesBot
           </Navbar.Brand>

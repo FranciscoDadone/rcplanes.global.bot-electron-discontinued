@@ -10,3 +10,7 @@
   border-left: 0.1em solid grey;
   height: 2.2em;
 }
+
+.navBrand {
+  cursor: pointer;
+}

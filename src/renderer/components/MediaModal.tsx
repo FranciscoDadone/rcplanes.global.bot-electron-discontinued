@@ -91,7 +91,7 @@ function MediaModal(props: {
         <Modal.Body style={{ background: '#282c34' }}>
           <div className="modal-container">
             <div className="modal-image">
-              <Media mediaType={mediaType} media={mediaModal} />
+              <Media mediaType={mediaType} media={mediaModal} autoplay />
               <div style={{ display: 'flex' }}>
                 <div>
                   <ul>

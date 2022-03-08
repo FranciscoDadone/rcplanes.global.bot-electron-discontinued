@@ -30,6 +30,9 @@ require('./utils/ipc/getPosts');
 // GetAllPosts (IPC Handler)
 require('./utils/ipc/getAllPosts');
 
+// getQueue (IPC Handler)
+require('./utils/ipc/getQueue');
+
 // HideModal (IPC Handler)
 require('./utils/ipc/hideModal');
 
@@ -53,6 +56,9 @@ require('./utils/ipc/getGeneralConfig');
 
 // setGeneralConfig (IPC Handler)
 require('./utils/ipc/setGeneralConfig');
+
+// updateQueue (IPC Handler)
+require('./utils/ipc/updateQueue');
 
 unhandled({
   logger: (err: Error) => {

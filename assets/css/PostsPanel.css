@@ -10,6 +10,12 @@
 
 .paginationDiv {
   width: 50%;
+  margin: 0 auto;
+  margin-left: 16rem;
+}
+
+.paginationDiv ul {
+  width: 50%;
   margin: auto;
 }
 

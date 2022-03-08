@@ -248,6 +248,29 @@ export async function addPostToHistory(
   db.run(sql, [ig_link, imgur_link, media_type, owner, caption, date]);
 }
 
+export async function swapInQueue(
+  row1: {
+    id: number;
+    media: string;
+    mediaType: string;
+    caption: string;
+    owner: string;
+  },
+  row2: {
+    id: number;
+    media: string;
+    mediaType: string;
+    caption: string;
+    owner: string;
+  }
+) {
+  const db = DatabaseHandler.getDatabase();
+  const sql1 = `UPDATE media_queue SET (media, mediaType, caption, owner)=(?,?,?,?) WHERE id=${row1.id}`;
+  const sql2 = `UPDATE media_queue SET (media, mediaType, caption, owner)=(?,?,?,?) WHERE id=${row2.id}`;
+  db.run(sql1, [row2.media, row2.mediaType, row2.caption, row2.owner]);
+  db.run(sql2, [row1.media, row1.mediaType, row1.caption, row1.owner]);
+}
+
 module.exports = {
   savePostFromHashtag,
   getPostFromIdJSON,
@@ -267,4 +290,5 @@ module.exports = {
   getQueue,
   removePostFromQueue,
   addPostToHistory,
+  swapInQueue,
 };
