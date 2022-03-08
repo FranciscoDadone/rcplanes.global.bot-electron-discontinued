@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Media from './Media';
 import '../../../assets/css/QueuePage.css';
 import EditModal from './EditModal';
+import PageLoading from './PageLoading';
 
 function QueuePage() {
   const [queuedPosts, setQueuedPosts] = useState<
@@ -48,11 +49,7 @@ function QueuePage() {
   }, [queuedPosts]);
 
   if (queuedPosts[0].owner === '') {
-    return (
-      <div className="black-bg">
-        <h1 className="loading-tag">Loading content...</h1>
-      </div>
-    );
+    return <PageLoading />;
   }
 
   const handleUp = (post: {

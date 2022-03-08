@@ -1,6 +1,7 @@
 import { Table } from 'react-bootstrap';
 import { ipcRenderer } from 'electron';
 import { useEffect, useState } from 'react';
+import PageLoading from './PageLoading';
 
 interface DataType {
   post_id: string;
@@ -41,6 +42,8 @@ function DatabasePage() {
     },
   ];
   if (posts1 !== undefined) arr = posts1;
+
+  if (arr[0].post_id === '') return <PageLoading />;
 
   return (
     <>

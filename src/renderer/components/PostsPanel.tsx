@@ -32,13 +32,7 @@ function PostsPanel(props: { posts: Post[] | undefined }) {
   const { posts } = props;
   const [activeTab, setActiveTab] = useState(1);
 
-  if (posts === undefined || posts.length === 0 || posts[0].post_id === '') {
-    return (
-      <div className="black-bg">
-        <h1 className="loading-tag">Loading content...</h1>
-      </div>
-    );
-  }
+  if (posts === undefined) return <div />;
 
   const handleClick = (number: number) => {
     setActiveTab(number);
