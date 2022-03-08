@@ -11,6 +11,8 @@ import {
 import { uploadToImgur } from './utils/uploadToImgur';
 import { publish } from './api/postContent';
 
+const Status = require('./utils/ipc/Status');
+
 const RESOURCES_PATH = process.env.NODE_ENV
   ? path.join(__dirname, '../../assets')
   : path.join(process.resourcesPath, 'assets');
@@ -53,7 +55,6 @@ async function uploadNewPost() {
     icon: path.join(RESOURCES_PATH, '/images/icon.png'),
   }).show();
 
-  console.log('Uploaded new post to Instagram!');
   removePostFromQueue(post.id);
 
   const utils = await getUtil();
@@ -81,7 +82,10 @@ export async function startPostingTask() {
     ')'
   );
   if (shouldPost) {
+    Status.setStatus('Uploading new post!');
     await uploadNewPost();
+    Status.setStatus('Idling...');
+    console.log('Uploaded new post to Instagram!');
   }
 
   await new Promise((resolve) => setTimeout(resolve, 300000));

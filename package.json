@@ -231,6 +231,7 @@
     "history": "^5.2.0",
     "imgur": "^2.1.4",
     "jimp": "^0.16.1",
+    "moment": "^2.29.1",
     "node-fetch": "^2.0.0",
     "react": "^17.0.2",
     "react-bootstrap": "^2.1.2",
