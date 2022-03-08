@@ -63,6 +63,9 @@ require('./utils/ipc/updateQueue');
 // deleteFromQueue (IPC Handler)
 require('./utils/ipc/deleteFromQueue');
 
+// updatePostFromQueue (IPC Handler)
+require('./utils/ipc/updatePostFromQueue');
+
 unhandled({
   logger: (err: Error) => {
     if (err.name === 'Error') {

@@ -271,6 +271,12 @@ export async function swapInQueue(
   db.run(sql2, [row1.media, row1.mediaType, row1.caption, row1.owner]);
 }
 
+export async function updateQueuePostCaption(id: string, caption: string) {
+  const db = DatabaseHandler.getDatabase();
+  const sql = `UPDATE media_queue SET (caption)=(?) WHERE id=${id}`;
+  db.run(sql, [caption]);
+}
+
 module.exports = {
   savePostFromHashtag,
   getPostFromIdJSON,
@@ -291,4 +297,5 @@ module.exports = {
   removePostFromQueue,
   addPostToHistory,
   swapInQueue,
+  updateQueuePostCaption,
 };

@@ -16,7 +16,6 @@ function EditModal(props: {
 }) {
   const { show, post, showId } = props;
   const [caption, setCaption] = useState<string>(post.caption);
-  const [mediaModal, setMediaModal] = useState(post.media);
 
   if (showId !== post.id.toString()) return <div />;
 
@@ -30,6 +29,18 @@ function EditModal(props: {
     });
   };
 
+  const handleSave = () => {
+    handleClose();
+    ipcRenderer
+      .invoke('updatePostFromQueue', {
+        id: post.id,
+        caption,
+      })
+      .catch((err) => {
+        throw new Error(`Error updating media: ${err}`);
+      });
+  };
+
   return (
     <>
       <Modal show={show} onHide={handleClose} fullscreen className="modal">
@@ -39,7 +50,7 @@ function EditModal(props: {
         <Modal.Body style={{ background: '#282c34' }}>
           <div className="modal-container">
             <div className="modal-image">
-              <Media mediaType={post.mediaType} media={mediaModal} autoplay />
+              <Media mediaType={post.mediaType} media={post.media} autoplay />
               <div style={{ display: 'flex' }}>
                 <div>
                   <ul>
@@ -75,6 +86,9 @@ function EditModal(props: {
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close
+          </Button>
+          <Button variant="success" onClick={handleSave}>
+            Save
           </Button>
           <Button variant="danger" onClick={handleDelete}>
             Delete from queue

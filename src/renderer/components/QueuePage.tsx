@@ -47,10 +47,10 @@ function QueuePage() {
     };
   }, [queuedPosts]);
 
-  ipcRenderer.on('updateQueueUI', () => {
-    ipcRenderer.invoke('getQueue').then((data) => {
-      setQueuedPosts(data);
-    });
+  console.log('aa');
+
+  ipcRenderer.invoke('getQueue').then((data) => {
+    if (queuedPosts !== data) setQueuedPosts(data);
   });
 
   if (queuedPosts[0].owner === '') {
