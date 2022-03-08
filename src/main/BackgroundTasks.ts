@@ -97,6 +97,7 @@ async function startHashtagFetching(wait: boolean) {
     updatePostsUI();
   } else {
     console.log('Fetching disabled :(');
+    Status.setStatus('Idling...');
   }
   Status.setStatus('Idling...');
   startHashtagFetching(true);

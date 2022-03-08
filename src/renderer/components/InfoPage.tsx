@@ -51,9 +51,12 @@ function InfoPage() {
             )
           )
           .format('HH:mm:ss');
+
         setNextUpload({
           nextUpload:
-            nextUpload.nextUpload === '00:00:00' ? '' : nextUpload.nextUpload,
+            parseInt(diff.substring(0, 2), 10) >= 23
+              ? ''
+              : nextUpload.nextUpload,
           eta: diff,
         });
       }
