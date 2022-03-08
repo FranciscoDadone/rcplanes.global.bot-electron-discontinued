@@ -22,7 +22,7 @@ function MediaModal(props: {
   useEffect(() => {
     let isMounted = true;
     ipcRenderer.invoke('getGeneralConfig').then((data) => {
-      if (isMounted) {
+      if (isMounted && caption === undefined) {
         const captionFormatted = data.description_boilerplate
           .replace('%description%', post.caption)
           .replace('%username%', post.username)
@@ -30,7 +30,6 @@ function MediaModal(props: {
         setCaption(captionFormatted);
       }
     });
-
     return () => {
       isMounted = false;
     };
