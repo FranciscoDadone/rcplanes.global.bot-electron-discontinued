@@ -6,3 +6,10 @@ ipcMain.handle('hideModal', async () => {
     false
   );
 });
+
+ipcMain.handle('hideEdit', async () => {
+  BrowserWindow.getAllWindows()[0].webContents.send(
+    'hideEditModalToRenderer',
+    false
+  );
+});

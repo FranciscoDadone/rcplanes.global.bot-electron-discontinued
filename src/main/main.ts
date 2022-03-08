@@ -60,6 +60,9 @@ require('./utils/ipc/setGeneralConfig');
 // updateQueue (IPC Handler)
 require('./utils/ipc/updateQueue');
 
+// deleteFromQueue (IPC Handler)
+require('./utils/ipc/deleteFromQueue');
+
 unhandled({
   logger: (err: Error) => {
     if (err.name === 'Error') {

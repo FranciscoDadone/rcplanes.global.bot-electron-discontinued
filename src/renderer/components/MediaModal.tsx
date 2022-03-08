@@ -2,7 +2,6 @@ import { Modal, Form, Button } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import { ipcRenderer } from 'electron';
 import path from 'path';
-import { getGeneralConfig } from '../../main/database/DatabaseQueries';
 import Media from './Media';
 
 const STORAGE_PATH = process.env.NODE_ENV
