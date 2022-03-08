@@ -66,6 +66,9 @@ require('./utils/ipc/deleteFromQueue');
 // updatePostFromQueue (IPC Handler)
 require('./utils/ipc/updatePostFromQueue');
 
+// hideEdit (IPC Handler)
+require('./utils/ipc/hideEdit');
+
 unhandled({
   logger: (err: Error) => {
     if (err.name === 'Error') {

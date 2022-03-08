@@ -19,18 +19,22 @@ function EditModal(props: {
 
   if (showId !== post.id.toString()) return <div />;
 
-  const handleClose = () => {
-    ipcRenderer.invoke('hideEdit');
+  const handleClose = (deleted?: boolean) => {
+    ipcRenderer.invoke('hideEdit', {
+      id: post.id,
+      caption,
+      deleted,
+    });
   };
 
   const handleDelete = () => {
     ipcRenderer.invoke('deleteFromQueue', post.id).then(() => {
-      handleClose();
+      handleClose(true);
     });
   };
 
   const handleSave = () => {
-    handleClose();
+    handleClose(false);
     ipcRenderer
       .invoke('updatePostFromQueue', {
         id: post.id,
@@ -84,7 +88,7 @@ function EditModal(props: {
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" onClick={() => handleClose()}>
             Close
           </Button>
           <Button variant="success" onClick={handleSave}>

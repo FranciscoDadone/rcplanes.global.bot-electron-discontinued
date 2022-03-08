@@ -1,8 +1,8 @@
 import { ipcMain, BrowserWindow } from 'electron';
 
-ipcMain.handle('hideModal', async () => {
+ipcMain.handle('hideEdit', async (_ev, args) => {
   BrowserWindow.getAllWindows()[0].webContents.send(
-    'hideModalToRenderer',
-    false
+    'hideEditModalToRenderer',
+    args
   );
 });

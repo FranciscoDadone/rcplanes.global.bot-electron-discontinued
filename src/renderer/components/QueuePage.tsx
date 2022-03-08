@@ -47,12 +47,6 @@ function QueuePage() {
     };
   }, [queuedPosts]);
 
-  console.log('aa');
-
-  ipcRenderer.invoke('getQueue').then((data) => {
-    if (queuedPosts !== data) setQueuedPosts(data);
-  });
-
   if (queuedPosts[0].owner === '') {
     return (
       <div className="black-bg">
@@ -139,7 +133,17 @@ function QueuePage() {
     });
   };
 
-  ipcRenderer.on('hideEditModalToRenderer', () => {
+  ipcRenderer.on('hideEditModalToRenderer', (_ev, args) => {
+    const aux = queuedPosts;
+    const postIndex = queuedPosts.indexOf(
+      queuedPosts.filter((p) => p.id === args.id)[0]
+    );
+    if (!args.deleted) {
+      aux[postIndex].caption = args.caption;
+    } else {
+      aux.splice(postIndex, 1);
+    }
+    setQueuedPosts(aux);
     setShowModal(false);
   });
 
